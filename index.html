@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font-size:14px;font-family:system-ui,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>ゲーム企画ノート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=IBM+Plex+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: 方眼ノートの上に、左=ステップ目次 / 中央=質問フォーム / 右=1枚に組み上がる企画書 */
+:root{
+  --paper:#EEF1F6; --sheet:#FFFFFF; --ink:#18203A; --ink-2:#4F5979; --rule:#D3D9E6;
+  --grid:rgba(36,72,201,.07); --cobalt:#2448C9; --cobalt-ink:#FFFFFF; --soft:#E4E9F6;
+  --marker:#FFE066; --marker-ink:#18203A; --ok:#1F7F55; --warn:#A55F00; --focus:#2448C9;
+  --f-display:"Dela Gothic One","Hiragino Sans","Noto Sans JP",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#10141F; --sheet:#171D2C; --ink:#E4E8F3; --ink-2:#9CA5C1; --rule:#2B3452;
+  --grid:rgba(143,162,255,.06); --cobalt:#8FA2FF; --cobalt-ink:#0E1430; --soft:#202941;
+  --marker:#E9C84A; --marker-ink:#17130A; --ok:#55C792; --warn:#E5A646; --focus:#8FA2FF; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --paper:#10141F; --sheet:#171D2C; --ink:#E4E8F3; --ink-2:#9CA5C1; --rule:#2B3452;
+  --grid:rgba(143,162,255,.06); --cobalt:#8FA2FF; --cobalt-ink:#0E1430; --soft:#202941;
+  --marker:#E9C84A; --marker-ink:#17130A; --ok:#55C792; --warn:#E5A646; --focus:#8FA2FF; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{
+  background-color:var(--paper); color:var(--ink); font-family:var(--f-body); font-size:15px; line-height:1.7;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.topbar{max-width:1440px;margin:0 auto;padding:18px 16px 10px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:baseline;gap:12px;min-width:0}
+.brand h1{font-family:var(--f-display);font-weight:400;font-size:24px;margin:0;letter-spacing:.02em}
+.brand small{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);letter-spacing:.08em}
+.docbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.docbar select{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:6px 10px;max-width:240px}
+.btn{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:6px 12px;cursor:pointer;font-size:14px;line-height:1.4}
+.btn:hover{border-color:var(--cobalt)}
+.btn.primary{background:var(--cobalt);color:var(--cobalt-ink);border-color:var(--cobalt);font-weight:700}
+.btn.danger-armed{border-color:var(--warn);color:var(--warn)}
+
+.banner{max-width:1440px;margin:0 auto 8px;padding:0 16px}
+.banner > div{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;background:var(--marker);color:var(--marker-ink);border-radius:6px;padding:8px 14px;font-size:14px}
+.banner button{background:transparent;border:1px solid currentColor;color:inherit;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:13px}
+
+.viewtoggle{display:none;max-width:1440px;margin:0 auto;padding:0 16px 10px;gap:6px}
+.viewtoggle button{flex:1;border:1px solid var(--rule);background:var(--sheet);padding:8px;border-radius:6px;cursor:pointer;font-weight:500}
+.viewtoggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.app{max-width:1440px;margin:0 auto;padding:4px 16px 48px;display:grid;grid-template-columns:210px minmax(0,1fr) minmax(0,460px);gap:24px;align-items:start}
+
+/* Step nav */
+.steps{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+.steps ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.steps button{width:100%;display:grid;grid-template-columns:28px 1fr auto;gap:6px;align-items:center;text-align:left;border:0;background:transparent;padding:7px 8px;border-radius:6px;cursor:pointer;font-size:14px}
+.steps button:hover{background:var(--soft)}
+.steps button[aria-current="step"]{background:var(--sheet);box-shadow:inset 3px 0 0 var(--cobalt);font-weight:700}
+.steps .n{font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+.steps .p{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.steps .p.full{color:var(--ok)}
+.overall{margin-top:14px;padding:10px 8px 0;border-top:1px dashed var(--rule);font-size:12px;color:var(--ink-2)}
+.meter{height:6px;background:var(--rule);border-radius:3px;overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--cobalt);width:0;transition:width .3s}
+
+/* Form */
+.form{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:28px clamp(16px,4vw,36px) 28px;min-width:0}
+.sec-head .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--cobalt);margin:0}
+.sec-head h2{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,3vw,30px);line-height:1.3;margin:4px 0 6px;text-wrap:balance}
+.sec-head .lead{margin:0 0 18px;color:var(--ink-2);max-width:62ch}
+.idea{border-left:3px solid var(--marker);background:var(--soft);padding:12px 16px;border-radius:0 6px 6px 0;margin:0 0 26px;font-size:14px;max-width:70ch}
+.idea .idea-name{font-weight:700;margin:0 0 4px}
+.idea p{margin:0}
+.idea ul{margin:8px 0 0;padding-left:1.2em}
+.fields{display:flex;flex-direction:column;gap:24px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.label{font-weight:700;font-size:15px}
+.hint{font-size:13px;color:var(--ink-2);margin:-2px 0 2px;max-width:62ch}
+input[type=text],textarea{width:100%;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:9px 12px;line-height:1.6}
+textarea{resize:vertical;min-height:64px}
+input[type=text]:focus,textarea:focus{background:var(--sheet);border-color:var(--cobalt);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--cobalt) 18%,transparent)}
+::placeholder{color:var(--ink-2);opacity:.6}
+.rows{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;gap:6px;align-items:center}
+.row .idx{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);width:22px;flex:none;text-align:right;font-variant-numeric:tabular-nums}
+.row input{flex:1;min-width:0}
+.icon{flex:none;width:32px;height:32px;border:1px solid var(--rule);background:var(--sheet);border-radius:6px;cursor:pointer;color:var(--ink-2);line-height:1;padding:0}
+.icon:hover{color:var(--ink);border-color:var(--ink-2)}
+.icon:disabled{opacity:.35;cursor:default}
+.add{align-self:flex-start;border:1px dashed var(--rule);background:transparent;border-radius:6px;padding:5px 12px;cursor:pointer;color:var(--cobalt);font-size:14px}
+.add:hover{border-color:var(--cobalt)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:6px 14px;cursor:pointer;text-align:left;font-size:14px;line-height:1.35}
+.chip small{display:block;font-size:11.5px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.chip[aria-pressed="true"] small{color:var(--marker-ink);opacity:.75}
+.chips.rich .chip{border-radius:8px;padding:8px 12px;flex:1 1 150px}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{border:1px solid var(--rule);border-radius:8px;padding:12px 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;position:relative}
+.card .full{grid-column:1/-1}
+.card label{font-size:12px;color:var(--ink-2);display:flex;flex-direction:column;gap:3px;min-width:0}
+.card-head{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:12px;color:var(--ink-2)}
+.loopviz{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:14px;border:1px dashed var(--rule);border-radius:8px;font-size:14px}
+.loopviz .st{background:var(--ink);color:var(--paper);padding:4px 10px;border-radius:999px}
+.loopviz .ar{color:var(--ink-2)}
+.loopviz .back{color:var(--cobalt);font-family:var(--f-mono);font-size:12px}
+.loopviz .empty{color:var(--ink-2);font-size:13px}
+.stepnav{display:flex;justify-content:space-between;gap:10px;margin-top:32px;padding-top:18px;border-top:1px solid var(--rule)}
+
+/* Finish */
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.checks li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;font-size:14px}
+.tag{font-family:var(--f-mono);font-size:11px;padding:2px 7px;border-radius:4px;border:1px solid currentColor;white-space:nowrap}
+.tag.warn{color:var(--warn)} .tag.tip{color:var(--cobalt)} .tag.ok{color:var(--ok)}
+.checks .jump{border:0;background:transparent;color:var(--cobalt);cursor:pointer;font-size:13px;white-space:nowrap;padding:0}
+.seg{display:flex;flex-wrap:wrap;gap:4px;background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:3px;align-self:flex-start}
+.seg button{border:0;background:transparent;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--sheet);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.out{font-family:var(--f-mono);font-size:12.5px;line-height:1.6;min-height:260px}
+.exp-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+details.imp summary{cursor:pointer;color:var(--ink-2);font-size:14px}
+details.imp .field{margin-top:10px}
+
+/* Preview sheet */
+.preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);display:flex;flex-direction:column;min-width:0}
+.pv-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 4px 8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--ink-2)}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;box-shadow:0 1px 0 var(--rule),0 12px 30px -18px rgba(20,30,70,.35);padding:26px 26px 32px;overflow:auto;font-size:13.5px;line-height:1.7;min-height:0}
+.sheet h1{font-family:var(--f-display);font-weight:400;font-size:22px;line-height:1.3;margin:0 0 10px;text-wrap:balance}
+.sheet h2{font-size:12px;font-family:var(--f-mono);font-weight:500;letter-spacing:.12em;color:var(--cobalt);margin:22px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--rule)}
+.sheet h3{font-size:14px;margin:12px 0 2px}
+.sheet p{margin:4px 0}
+.sheet ul,.sheet ol{margin:4px 0;padding-left:1.3em}
+.sheet blockquote{margin:0 0 6px;padding:8px 12px;background:var(--marker);color:var(--marker-ink);border-radius:4px;font-weight:500}
+.sheet strong{font-weight:700}
+.sheet .empty-doc{color:var(--ink-2);text-align:center;padding:40px 0}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:6px;font-size:14px;max-width:calc(100% - 32px);z-index:10}
+
+@media (max-width:1080px){
+  .viewtoggle{display:flex}
+  .app{grid-template-columns:minmax(0,1fr)}
+  .steps{position:static;overflow-x:auto;margin:0 -16px;padding:0 16px}
+  .steps ol{flex-direction:row;gap:4px;width:max-content}
+  .steps button{grid-template-columns:auto auto;padding:6px 10px;background:var(--sheet);border:1px solid var(--rule)}
+  .steps button[aria-current="step"]{box-shadow:inset 0 -3px 0 var(--cobalt)}
+  .steps .p{display:none}
+  .overall{display:none}
+  .preview{position:static;max-height:none}
+  .app:not(.show-preview) .preview{display:none}
+  .app.show-preview .form{display:none}
+}
+@media (max-width:560px){ .card{grid-template-columns:minmax(0,1fr)} .checks li{grid-template-columns:auto 1fr} .checks .jump{grid-column:2;justify-self:start} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><h1>ゲーム企画ノート</h1><small>GAME CONCEPT NOTE</small></div>
+  <div class="docbar">
+    <label for="docSel" class="hint" style="margin:0">企画</label>
+    <select id="docSel"></select>
+    <button class="btn" id="newDoc" type="button">＋ 新しい企画</button>
+    <button class="btn" id="delDoc" type="button">この企画を削除</button>
+  </div>
+</div>
+<div class="banner" id="banner" hidden><div><span>いま表示しているのは記入例（サンプル）です。</span><button type="button" id="startBlank">白紙から始める</button></div></div>
+<div class="viewtoggle" role="group" aria-label="表示切替">
+  <button type="button" id="vForm" aria-pressed="true">入力</button>
+  <button type="button" id="vPrev" aria-pressed="false">企画書プレビュー</button>
+</div>
+
+<main class="app" id="app">
+  <nav class="steps" aria-label="ステップ"><ol id="stepList"></ol>
+    <div class="overall"><span id="overallTxt">記入率</span><div class="meter"><i id="overallBar"></i></div></div>
+  </nav>
+  <section class="form" id="form" aria-live="off"></section>
+  <aside class="preview" aria-label="企画書プレビュー">
+    <div class="pv-head"><span>ONE-PAGE PREVIEW</span><span id="pvPct"></span></div>
+    <article class="sheet" id="sheet"></article>
+  </aside>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const FUNS=[
+ {k:'sensation',l:'感覚',d:'操作・映像・音そのものの気持ちよさ'},
+ {k:'fantasy',l:'空想',d:'別の誰か、別の世界になりきる'},
+ {k:'narrative',l:'物語',d:'展開やドラマを追いかける'},
+ {k:'challenge',l:'挑戦',d:'難関を乗り越える達成感'},
+ {k:'fellowship',l:'仲間',d:'協力・対戦・交流そのもの'},
+ {k:'discovery',l:'発見',d:'未知の場所や仕組みを知る'},
+ {k:'expression',l:'表現',d:'自分らしさを作って見せる'},
+ {k:'submission',l:'没頭',d:'気楽に繰り返して時間を忘れる'}];
+const HOOKS=['仕組み','物語','見た目・音','感情','メタ','スケール'];
+
+const SECTIONS=[
+ {id:'basics',title:'基本情報',lead:'まず企画の外枠を決めます。誰が、何で、どのくらいの時間遊ぶゲームか。',
+  idea:{name:'コンセプト文書の定番項目',text:'企画書ではジャンル・プラットフォーム・ターゲットを最初に書くのが定番です。読む人が最初に知りたい情報で、ここが決まると操作や1回の長さも決めやすくなります。'},
+  fields:[
+   {k:'title',type:'text',label:'仮タイトル',ph:'例：ランタンダイバー'},
+   {k:'genre',type:'text',label:'ジャンル',ph:'例：探索ローグライト'},
+   {k:'platform',type:'text',label:'プラットフォーム・操作デバイス',ph:'例：PC / Switch（パッド前提）'},
+   {k:'playtime',type:'text',label:'1回のプレイ時間と全体のボリューム',ph:'例：1プレイ10分、クリアまで5〜8時間'},
+   {k:'audience',type:'textarea',label:'誰に遊んでほしいか',ph:'例：仕事終わりに短く遊びたいローグライト経験者',hint:'年齢よりも「どんな遊び方をする人か」「何が好きな人か」で書くと、設計の判断に使えます。'}]},
+ {id:'concept',title:'一言コンセプト',lead:'このゲームを1〜2文で言い切ります。迷ったときに立ち返る一文です。',
+  idea:{name:'ハイコンセプトとフック',text:'ハイコンセプトは「プレイヤーが何をするか」を主語に書きます。起きる出来事ではなく、プレイヤーの行動です。フックは、似た作品と並んだときにこのゲームを選ぶ理由です。',
+   qs:['型：「【ジャンル】で、プレイヤーは【主な行動】をして【目的】を目指す。【フック】が特徴。」','人に30秒で説明するとしたら、最初に何を言いますか？']},
+  fields:[
+   {k:'concept',type:'textarea',rows:2,label:'このゲームを一言でいうと',ph:'例：小さなランタンひとつで深海に潜り、灯りの残量をやりくりしながら宝を持ち帰る探索ローグライト'},
+   {k:'hook',type:'textarea',rows:2,label:'フック（このゲームだけの特徴）',ph:'例：灯りが体力と視界を兼ねている。明るくすると遠くまで見えるが、早く尽きて敵にも見つかる'},
+   {k:'hookType',type:'chips',single:true,label:'フックの種類',options:HOOKS.map(h=>({k:h,l:h})),hint:'どれか一つに絞ると、何を磨けばいいかがはっきりします。'},
+   {k:'comps',type:'cards',label:'似ている作品と、その違い',primary:'title',sub:[{k:'title',l:'作品名',ph:'例：Spelunky'},{k:'diff',l:'この企画との違い',ph:'例：即死より「暗さと残量」の判断が中心'}],hint:'「○○のファン向け」と言える作品があると、ターゲットも伝わります。'}]},
+ {id:'experience',title:'作りたい体験',lead:'機能より先に、プレイヤーの心の中で何が起きてほしいかを書きます。',
+  idea:{name:'体験のレンズ（ジェシー・シェル『The Art of Game Design』）',text:'ゲームは体験そのものではなく、体験を生む装置だという考え方です。次の3つを自分に問いかけます。',
+   qs:['プレイヤーにどんな体験をしてほしいか','その体験に欠かせないものは何か','ゲームでその本質をどう捉えるか']},
+  fields:[
+   {k:'feelings',type:'list',label:'プレイヤーに感じてほしいこと',ph:['例：暗闇の先を確かめたくなる好奇心','例：「あと少し潜るか、引き返すか」の緊張','例：無事に浮上できたときの安堵']},
+   {k:'fantasy',type:'text',label:'プレイヤーは何者になるか',ph:'例：誰も見たことのない深さへ行く、ひとりきりの潜水士',hint:'「プレイヤーファンタジー」とも呼びます。どんな人物・立場・力を味わうゲームか。'},
+   {k:'funs',type:'chips',rich:true,label:'中心になる楽しさの種類',options:FUNS,hint:'MDAフレームワークの「8種類の楽しさ」です。主役は3つまでに絞るのがおすすめ。'},
+   {k:'moment',type:'textarea',label:'忘れられない瞬間',ph:'例：灯りが残りわずかな状態で光る遺物を見つけ、取りに行くか迷い、取って全力で浮上する瞬間',hint:'プレイ後に誰かに話したくなる場面を1つ。これが作れるかが企画の試金石になります。'},
+   {k:'anti',type:'list',label:'作りたくない体験',ph:['例：理不尽な即死の連続','例：覚えゲーになって暗闇が怖くなくなる']}]},
+ {id:'pillars',title:'デザインピラー',lead:'ゲームの柱を3〜4つの短い言葉にします。新しいアイデアを入れるか迷ったときの判定基準です。',
+  idea:{name:'デザインピラー（柱）',text:'ピラーは「このゲームが必ず届ける体験」を短い言葉にしたものです。アイデアが出るたびに「どの柱を強くするか」を問い、どの柱にも当てはまらなければ入れません。宣伝用のセールスポイントとは別物で、チームの判断のためのものです。'},
+  fields:[
+   {k:'pillars',type:'cards',label:'ピラー',primary:'name',numbered:true,sub:[{k:'name',l:'柱（短い言葉）',ph:'例：灯りは命'},{k:'desc',l:'意味',ph:'例：あらゆる判断が灯りの残量につながる'},{k:'yes',l:'○ この柱に沿うアイデア',ph:'例：灯りを強めると見つかる敵'},{k:'no',l:'× この柱に反するアイデア',ph:'例：灯りと無関係な体力ゲージ'}]},
+   {k:'priorities',type:'ranked',label:'他の要素より優先するもの（上ほど優先）',ph:['例：緊張感'],hint:'ぶつかったときにどちらを取るかの順番です。上下ボタンで並べ替えられます。'}]},
+ {id:'loop',title:'ゲームループと操作',lead:'プレイヤーが何度も繰り返す行動の流れと、それを支える操作を決めます。',
+  idea:{name:'MDAフレームワーク',text:'プレイヤーが感じる楽しさ（Aesthetics）は、ルール（Mechanics）から生まれるプレイの流れ（Dynamics）を通して生まれます。感情は直接作れないので、ループとルールで作ります。前のステップの「体験」とつながっているか見比べてください。'},
+  fields:[
+   {k:'loop',type:'list',viz:true,label:'コアループ（最後が最初に戻る）',ph:['例：潜る','例：探す','例：灯りを使って判断する','例：宝を持ち帰る','例：装備を強化する'],hint:'3〜5ステップが目安です。'},
+   {k:'loopSession',type:'textarea',label:'1回のプレイの流れ',ph:'例：港で装備を選ぶ → 3〜4層を潜る → 浮上または全滅 → 宝で強化'},
+   {k:'loopLong',type:'textarea',label:'長く遊ぶ理由',ph:'例：新しい深度と生物の図鑑を埋める。最深部の謎を解く'},
+   {k:'verbs',type:'list',label:'プレイヤーができること（動詞で）',ph:['例：泳ぐ','例：灯りの強さを変える','例：拾う']},
+   {k:'camera',type:'text',label:'カメラ',ph:'例：2D横視点。視界は灯りの範囲だけ',hint:'カメラ・キャラクター・操作は「3C」と呼ばれる、手触りの土台です。'},
+   {k:'character',type:'text',label:'キャラクター',ph:'例：小柄な潜水士。重い装備ほど遅くなる'},
+   {k:'control',type:'text',label:'操作',ph:'例：左スティックで泳ぐ、トリガーで灯りの強弱'}]},
+ {id:'systems',title:'主要システム',lead:'ループを動かす仕組みを、まずはざっくり書きます。細かい数値は後でかまいません。',
+  idea:{name:'書きすぎない',text:'この段階では「何のためのシステムか」と「どう働くか」が1〜3行で書ければ十分です。詳しい仕様は、プロトタイプで面白さを確かめてから別の文書にします。'},
+  fields:[
+   {k:'systems',type:'cards',label:'システム',primary:'content',sub:[{k:'name',l:'名前',ph:'例：戦闘'},{k:'content',l:'どう働くか',ph:'例：光に寄る敵と光を嫌う敵がいる',full:true,area:true}]},
+   {k:'winLose',type:'textarea',label:'成功・失敗の条件',ph:'例：浮上すれば成功。灯りが尽きるか倒れると失敗'}]},
+ {id:'world',title:'世界観・雰囲気',lead:'見た目と音の方向性を決めます。文章より参考作品のほうが伝わります。',
+  idea:{name:'参考で伝える',text:'ビジュアルの方向性は長い文章より参考資料で伝わりやすいものです。参考作品は「どこを借りるか」まで書くと、誤解が減ります。'},
+  fields:[
+   {k:'setting',type:'text',label:'舞台',ph:'例：沈んだ港町の沖合いの深海'},
+   {k:'theme',type:'text',label:'テーマ',ph:'例：未知への好奇心と、引き際の判断'},
+   {k:'visual',type:'textarea',label:'ビジュアルの方向性',ph:'例：暗い青黒の画面に、灯りの届く範囲だけ色が乗るドット絵'},
+   {k:'audio',type:'textarea',label:'音楽・効果音の方向性',ph:'例：環境音中心。水音、遠い鳴き声、心拍のような低音'},
+   {k:'refs',type:'cards',label:'参考作品・資料',primary:'title',sub:[{k:'title',l:'作品・資料',ph:'例：深海ドキュメンタリー'},{k:'borrow',l:'借りたいところ',ph:'例：生物の発光の色と動き'}]}]},
+ {id:'scope',title:'方針とスコープ',lead:'何を守り、何をやらないかを決めます。ここが一番、制作を楽にします。',
+  idea:{name:'ワンページ・デザイン（ストーン・リブランデ）',text:'長い企画書は最初のページしか読まれない、という問題から生まれた考え方です。1ページで説明できない機能は、まだ作る準備ができていないサインでもあります。入れたいものは「アイデア置き場」へ逃がし、今回入れないものを明記しましょう。'},
+  fields:[
+   {k:'rules',type:'list',label:'絶対に守る方針',ph:['例：1プレイは15分を超えない','例：運より判断を重視する','例：暗いが理不尽にしない']},
+   {k:'notNow',type:'list',label:'今回は入れないもの',ph:['例：マルチプレイ']},
+   {k:'ideas',type:'list',label:'入れたいアイデア置き場',ph:['例：仲間を雇う'],hint:'まだ決めない。忘れないためだけに置いておく場所です。'},
+   {k:'open',type:'list',label:'未決定事項',ph:['例：死んだときに何を残すか']}]},
+ {id:'next',title:'次に作るもの',lead:'最初に作る小さなものと、それで確かめたいことを決めます。',
+  idea:{name:'問いから始める',text:'プロトタイプは「この企画の面白さの芯が本当に面白いか」を確かめるために作ります。確かめたい問いを1つ書き、それに必要な最小限だけを作りましょう。'},
+  fields:[
+   {k:'question',type:'textarea',label:'プロトタイプで確かめたいこと',ph:'例：「灯りを強める＝見つかる」だけで、潜行が緊張する判断の連続になるか'},
+   {k:'next',type:'list',label:'次に作るもの',ph:['例：灯りと暗闇の表現だけのプロトタイプ','例：光に寄ってくる生物1種']}]},
+ {id:'finish',title:'仕上げと書き出し',lead:'抜けている所をチェックし、企画書を書き出します。'}
+];
+
+function blank(){return{
+ title:'',genre:'',platform:'',playtime:'',audience:'',
+ concept:'',hook:'',hookType:'',comps:[{title:'',diff:''}],
+ feelings:['','',''],fantasy:'',funs:[],moment:'',anti:['',''],
+ pillars:[{name:'',desc:'',yes:'',no:''},{name:'',desc:'',yes:'',no:''},{name:'',desc:'',yes:'',no:''}],
+ priorities:['操作の気持ちよさ','テンポ','戦略性','雰囲気'],
+ loop:['','','',''],loopSession:'',loopLong:'',verbs:['','',''],camera:'',character:'',control:'',
+ systems:[{name:'戦闘',content:''},{name:'成長',content:''},{name:'ステージ',content:''},{name:'報酬',content:''}],winLose:'',
+ setting:'',theme:'',visual:'',audio:'',refs:[{title:'',borrow:''}],
+ rules:['',''],notNow:[''],ideas:[''],open:[''],question:'',next:['']};}
+
+function sample(){return{
+ title:'ランタンダイバー（記入例）',genre:'探索ローグライト（2D横視点）',platform:'PC / Switch（パッド前提）',playtime:'1潜行10分前後、エンディングまで約6時間',
+ audience:'ローグライトを何本か遊んだことがあり、短い時間で1回分の決着がつくゲームが好きな人。暗く静かな雰囲気が好きな人。',
+ concept:'小さなランタンひとつで深海に潜り、灯りの残量をやりくりしながら、より深い場所の宝を持ち帰る探索ローグライト。',
+ hook:'灯りが体力と視界を兼ねている。明るくすれば遠くまで見えるが、そのぶん早く尽き、深海生物にも見つかりやすくなる。',hookType:'仕組み',
+ comps:[{title:'Spelunky',diff:'地形の即死より「暗さ」と「残量」の判断が中心'},{title:'Dredge',diff:'物語より、1回の潜行の駆け引きに集中する'}],
+ feelings:['暗闇の先に何があるのか確かめたくなる好奇心','「あと少しだけ潜るか、引き返すか」の緊張','無事に浮上できたときの安堵'],
+ fantasy:'誰も見たことのない深さへ行く、ひとりきりの潜水士',funs:['discovery','challenge','sensation'],
+ moment:'灯りが残りわずかの状態で、遠くに光る遺物を見つける。取りに行くか迷い、取って全力で浮上する瞬間。',
+ anti:['理不尽な即死の連続','覚えゲーになって暗闇が怖くなくなること'],
+ pillars:[{name:'灯りは命',desc:'あらゆる判断が灯りの残量につながる',yes:'灯りを強めると寄ってくる敵',no:'灯りと無関係な体力ゲージ'},
+  {name:'引き返す勇気',desc:'深く行くほど得るが、戻れなければ失う',yes:'浮上ルートが毎回変わる',no:'どこでもセーブできる'},
+  {name:'静かな深海',desc:'派手さより気配。音と暗さで緊張を作る',yes:'遠くの生物の音だけが聞こえる',no:'常に流れる派手なBGM'}],
+ priorities:['緊張感','判断の手ごたえ','雰囲気','操作の気持ちよさ','テンポ'],
+ loop:['潜る','探す','灯りを使って判断する','宝を持ち帰る','装備を強化する'],
+ loopSession:'港で装備を選ぶ → 3〜4層を潜る → 浮上または全滅 → 持ち帰った宝で強化',
+ loopLong:'新しい深度と生物の図鑑を埋める。最深部にある「沈んだ灯台」の謎を解く。',
+ verbs:['泳ぐ','灯りの強さを変える','照明弾を投げる','拾う','浮上する'],
+ camera:'2D横視点。見えるのは灯りの届く範囲だけ',character:'小柄な潜水士。重い装備ほど遅くなる',control:'左スティックで泳ぐ、トリガーで灯りの強弱',
+ systems:[{name:'灯り',content:'燃料は時間と明るさで減る。燃料は拾うか、宝と交換して補給する。'},{name:'深海生物',content:'光に寄るもの、光を嫌うもの、音に反応するものの3系統。'},{name:'成長',content:'持ち帰った宝で潜水服とランタンを改良。倒れると潜行中の宝は失う。'},{name:'ステージ',content:'層ごとに地形を自動生成。深いほど暗く、報酬が大きい。'}],
+ winLose:'浮上すれば成功（宝を獲得）。灯りが尽きるか、攻撃で倒れると失敗。',
+ setting:'沈んだ港町の沖合いの深海',theme:'未知への好奇心と、引き際の判断',visual:'暗い青黒の画面に、灯りの届く範囲だけ色が乗るドット絵',audio:'環境音が中心。水音、遠い鳴き声、心拍のような低音',
+ refs:[{title:'深海ドキュメンタリー映像',borrow:'生物の発光の色と動き'}],
+ rules:['1潜行は15分を超えない','見えないことを理不尽にしない（音で必ず気配を伝える）','運より判断を重視する'],
+ notNow:['マルチプレイ','会話の多いストーリー','クラフト要素'],ideas:['仲間の潜水士を雇う','拾った古い手紙で世界の背景を少しずつ知る'],
+ open:['倒れたときに何を残すか（すべて失う／一部残る）','操作をパッド専用にするか'],
+ question:'「灯りを強める＝見つかる」というルールだけで、1回の潜行が緊張する判断の連続になるか。',
+ next:['灯りと暗闇の表現だけのプロトタイプ','光に寄ってくる生物1種','1層だけで浮上して終わるループ']};}
+
+/* ---------- storage ---------- */
+const KEY='game-concept-note-v1';
+let store={current:null,docs:{}};
+function load(){try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);if(s&&s.docs&&Object.keys(s.docs).length)store=s;}}catch(e){}
+ if(!store.current||!store.docs[store.current]){const id=newId();store.docs[id]={sample:true,data:sample(),updated:Date.now()};store.current=id;}}
+let saveT;function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}},250);}
+function newId(){return 'd'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function doc(){return store.docs[store.current];}
+function S(){return doc().data;}
+
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const t=v=>String(v??'').trim();
+const nn=a=>(a||[]).filter(x=>t(x)).length;
+let step=0;
+
+function filled(f,s){const v=s[f.k];
+ if(f.type==='list'||f.type==='ranked')return nn(v)>0;
+ if(f.type==='chips')return f.single?!!t(v):(v||[]).length>0;
+ if(f.type==='cards')return (v||[]).some(o=>t(o[f.primary]));
+ return !!t(v);}
+function secProgress(sec,s){if(!sec.fields)return null;const n=sec.fields.filter(f=>filled(f,s)).length;return [n,sec.fields.length];}
+
+/* ---------- render: nav ---------- */
+function renderNav(){const s=S();let tot=0,fil=0;
+ $('#stepList').innerHTML=SECTIONS.map((sec,i)=>{const p=secProgress(sec,s);let ptxt='';
+  if(p){tot+=p[1];fil+=p[0];ptxt=`<span class="p${p[0]===p[1]?' full':''}">${p[0]}/${p[1]}</span>`;}
+  return `<li><button type="button" data-step="${i}"${i===step?' aria-current="step"':''}><span class="n">${String(i+1).padStart(2,'0')}</span><span>${sec.title}</span>${ptxt}</button></li>`;}).join('');
+ const pct=tot?Math.round(fil/tot*100):0;
+ $('#overallTxt').textContent=`記入率 ${pct}%`;$('#overallBar').style.width=pct+'%';$('#pvPct').textContent=`記入率 ${pct}%`;}
+
+/* ---------- render: fields ---------- */
+function phOf(f,i){if(Array.isArray(f.ph))return f.ph[i]||'';return f.ph||'';}
+function hintH(f){return f.hint?`<p class="hint">${esc(f.hint)}</p>`:'';}
+function fieldH(f,s){const v=s[f.k];
+ if(f.type==='text')return `<div class="field"><label class="label" for="f-${f.k}">${f.label}</label>${hintH(f)}<input type="text" id="f-${f.k}" data-k="${f.k}" value="${esc(v)}" placeholder="${esc(f.ph)}"></div>`;
+ if(f.type==='textarea')return `<div class="field"><label class="label" for="f-${f.k}">${f.label}</label>${hintH(f)}<textarea id="f-${f.k}" data-k="${f.k}" rows="${f.rows||3}" placeholder="${esc(f.ph)}">${esc(v)}</textarea></div>`;
+ if(f.type==='chips'){const sel=f.single?[v]:(v||[]);
+  return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}<div class="chips${f.rich?' rich':''}">${f.options.map(o=>`<button type="button" class="chip" data-act="chip" data-k="${f.k}" data-v="${esc(o.k)}" aria-pressed="${sel.includes(o.k)}">${esc(o.l)}${o.d?`<small>${esc(o.d)}</small>`:''}</button>`).join('')}</div></div>`;}
+ if(f.type==='list'||f.type==='ranked'){const rk=f.type==='ranked';
+  const rows=v.map((x,i)=>`<div class="row"><span class="idx">${(rk||f.viz)?i+1:'・'}</span><input type="text" id="f-${f.k}-${i}" data-k="${f.k}" data-i="${i}" value="${esc(x)}" placeholder="${esc(phOf(f,i))}" aria-label="${esc(f.label)} ${i+1}">${rk?`<button type="button" class="icon" data-act="up" data-k="${f.k}" data-i="${i}" aria-label="上へ"${i===0?' disabled':''}>↑</button><button type="button" class="icon" data-act="down" data-k="${f.k}" data-i="${i}" aria-label="下へ"${i===v.length-1?' disabled':''}>↓</button>`:''}<button type="button" class="icon" data-act="del" data-k="${f.k}" data-i="${i}" aria-label="削除">×</button></div>`).join('');
+  return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}<div class="rows">${rows}</div><button type="button" class="add" data-act="add" data-k="${f.k}">＋ 行を追加</button>${f.viz?`<div class="loopviz" id="loopviz"></div>`:''}</div>`;}
+ if(f.type==='cards'){
+  const cards=v.map((o,i)=>`<div class="card"><div class="card-head"><span>${f.numbered?'PILLAR '+(i+1):'#'+(i+1)}</span><button type="button" class="icon" data-act="del" data-k="${f.k}" data-i="${i}" aria-label="削除">×</button></div>${f.sub.map(sf=>{const id=`f-${f.k}-${i}-${sf.k}`;const ctl=sf.area?`<textarea id="${id}" rows="2" data-k="${f.k}" data-i="${i}" data-sub="${sf.k}" placeholder="${esc(sf.ph)}">${esc(o[sf.k])}</textarea>`:`<input type="text" id="${id}" data-k="${f.k}" data-i="${i}" data-sub="${sf.k}" value="${esc(o[sf.k])}" placeholder="${esc(sf.ph)}">`;return `<label class="${sf.full?'full':''}" for="${id}">${esc(sf.l)}${ctl}</label>`;}).join('')}</div>`).join('');
+  return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}<div class="cards">${cards}</div><button type="button" class="add" data-act="add" data-k="${f.k}">＋ 追加</button></div>`;}
+ return '';}
+
+function renderLoopViz(){const el=$('#loopviz');if(!el)return;const st=S().loop.filter(x=>t(x));
+ el.innerHTML=st.length?st.map(x=>`<span class="st">${esc(x)}</span>`).join('<span class="ar">→</span>')+'<span class="ar">→</span><span class="back">↺ 最初へ戻る</span>':'<span class="empty">ステップを書くと、ここにループが表示されます。</span>';}
+
+function renderForm(){const sec=SECTIONS[step],s=S();
+ let h=`<header class="sec-head"><p class="eyebrow">STEP ${String(step+1).padStart(2,'0')} / ${String(SECTIONS.length).padStart(2,'0')}</p><h2>${sec.title}</h2><p class="lead">${sec.lead}</p></header>`;
+ if(sec.idea)h+=`<aside class="idea"><p class="idea-name">${esc(sec.idea.name)}</p><p>${esc(sec.idea.text)}</p>${sec.idea.qs?'<ul>'+sec.idea.qs.map(q=>`<li>${esc(q)}</li>`).join('')+'</ul>':''}</aside>`;
+ if(sec.id==='finish')h+=finishH();else h+=`<div class="fields">${sec.fields.map(f=>fieldH(f,s)).join('')}</div>`;
+ h+=`<div class="stepnav"><button type="button" class="btn" data-act="prev"${step===0?' hidden':''}>← ${step>0?SECTIONS[step-1].title:''}</button><span></span>${step<SECTIONS.length-1?`<button type="button" class="btn primary" data-act="next">${SECTIONS[step+1].title} →</button>`:''}</div>`;
+ $('#form').innerHTML=h;renderLoopViz();if(sec.id==='finish')updateOut();}
+
+/* ---------- checks ---------- */
+function checks(s){const o=[];const L=(lv,tx,st)=>o.push({lv,tx,st});
+ const c=t(s.concept);
+ if(!c)L('warn','一言コンセプトがまだ空です。プレイヤーが何をするゲームかを1〜2文で書きましょう。',1);
+ else if(c.length>90)L('tip',`一言コンセプトが${c.length}文字あります。60文字前後まで削ると、人に伝わりやすくなります。`,1);
+ if(!t(s.hook))L('warn','フックが空です。似た作品と並んだとき、このゲームを選ぶ理由を一つ書きましょう。',1);
+ if(!t(s.audience))L('tip','誰に遊んでほしいかが空です。難易度や1回の長さを決める手がかりになります。',0);
+ if(!nn(s.feelings))L('warn','プレイヤーに感じてほしいことが空です。企画の出発点になる項目です。',2);
+ if(!s.funs.length)L('tip','中心になる楽しさの種類が未選択です。',2);
+ else if(s.funs.length>3)L('tip',`楽しさの種類が${s.funs.length}つ選ばれています。主役を3つまでに絞ると判断がぶれにくくなります。`,2);
+ if(!t(s.moment))L('tip','忘れられない瞬間が空です。遊んだ人が誰かに話したくなる場面を1つ。',2);
+ const pn=s.pillars.filter(p=>t(p.name)).length;
+ if(pn<3)L('warn',`デザインピラーが${pn}つです。3〜4つあると、アイデアを選ぶ基準として働きます。`,3);
+ else if(pn>5)L('tip',`デザインピラーが${pn}つあります。多すぎると基準として使いにくくなります。`,3);
+ const pNo=s.pillars.filter(p=>t(p.name)&&!t(p.no)).length;
+ if(pNo)L('tip',`${pNo}つのピラーに「反するアイデア」がありません。何を断るかが書いてあると、判定に使えます。`,3);
+ const ln=nn(s.loop);
+ if(ln<3)L('warn',`コアループが${ln}ステップです。3〜5ステップで、最後が最初につながる形にしましょう。`,4);
+ else if(ln>7)L('tip',`コアループが${ln}ステップあります。核になる部分だけに絞れないか見直しましょう。`,4);
+ if(!nn(s.verbs))L('tip','プレイヤーができること（動詞）が空です。',4);
+ if(!t(s.winLose))L('tip','成功・失敗の条件が空です。',5);
+ if(!nn(s.notNow))L('warn','「今回は入れないもの」が空です。1つ決めておくと、作業が膨らむのを防げます。',7);
+ if(!t(s.question))L('warn','プロトタイプで確かめたいことが空です。最初に作るものの目的になります。',8);
+ if(!nn(s.next))L('tip','次に作るものが空です。',8);
+ return o;}
+
+/* ---------- markdown ---------- */
+function toMD(s){const out=[];const P=x=>out.push(x);const B=()=>out.push('');
+ const list=(a,pre='- ')=>a.filter(x=>t(x)).forEach((x,i)=>P((pre==='1'?`${i+1}. `:pre)+t(x)));
+ const kv=(k,v)=>{if(t(v))P(`- ${k}：${t(v).replace(/\n+/g,' ')}`);};
+ const para=(label,v)=>{if(t(v)){P(`**${label}**`);t(v).split('\n').forEach(l=>P(l));B();}};
+ P(`# ${t(s.title)||'無題の企画'}`);if(t(s.concept))P('> '+t(s.concept).replace(/\n+/g,' '));B();
+ if(t(s.genre)||t(s.platform)||t(s.playtime)||t(s.audience)){P('## 基本情報');kv('ジャンル',s.genre);kv('プラットフォーム',s.platform);kv('プレイ時間',s.playtime);kv('ターゲット',s.audience);B();}
+ const comps=s.comps.filter(c=>t(c.title));
+ if(t(s.hook)||comps.length){P('## フック');if(t(s.hook)){P((t(s.hookType)?`**${t(s.hookType)}**：`:'')+t(s.hook).replace(/\n+/g,' '));B();}
+  if(comps.length){P('**似ている作品との違い**');comps.forEach(c=>P(`- ${t(c.title)}${t(c.diff)?'：'+t(c.diff):''}`));B();}}
+ const funs=s.funs.map(k=>(FUNS.find(f=>f.k===k)||{}).l).filter(Boolean);
+ if(nn(s.feelings)||t(s.fantasy)||funs.length||t(s.moment)||nn(s.anti)){P('## 作りたい体験');
+  if(t(s.fantasy)){P(`**プレイヤーは何者になるか**：${t(s.fantasy)}`);B();}
+  if(nn(s.feelings)){P('**感じてほしいこと**');list(s.feelings);B();}
+  if(funs.length){P(`**中心になる楽しさ**：${funs.join('・')}`);B();}
+  para('忘れられない瞬間',s.moment);
+  if(nn(s.anti)){P('**作りたくない体験**');list(s.anti);B();}}
+ const pil=s.pillars.filter(p=>t(p.name));
+ if(pil.length||nn(s.priorities)){P('## デザインピラー');
+  pil.forEach((p,i)=>{P(`### ${i+1}. ${t(p.name)}`);if(t(p.desc))P(t(p.desc));if(t(p.yes))P(`- ○ 沿う：${t(p.yes)}`);if(t(p.no))P(`- × 反する：${t(p.no)}`);B();});
+  if(nn(s.priorities)){P('**優先順位**');list(s.priorities,'1');B();}}
+ const lp=s.loop.filter(x=>t(x)).map(t);
+ if(lp.length||t(s.loopSession)||t(s.loopLong)||nn(s.verbs)||t(s.camera)||t(s.character)||t(s.control)){P('## ゲームループと操作');
+  if(lp.length){P(`**コアループ**：${lp.join(' → ')} → （最初へ）`);B();}
+  para('1回のプレイの流れ',s.loopSession);para('長く遊ぶ理由',s.loopLong);
+  if(nn(s.verbs)){P(`**プレイヤーができること**：${s.verbs.filter(x=>t(x)).map(t).join('・')}`);B();}
+  if(t(s.camera)||t(s.character)||t(s.control)){P('**3C**');kv('カメラ',s.camera);kv('キャラクター',s.character);kv('操作',s.control);B();}}
+ const sys=s.systems.filter(x=>t(x.content)||t(x.name)&&t(x.content));
+ if(sys.length||t(s.winLose)){P('## 主要システム');sys.forEach(x=>{P(`### ${t(x.name)||'システム'}`);t(x.content).split('\n').forEach(l=>P(l));B();});para('成功・失敗の条件',s.winLose);}
+ const refs=s.refs.filter(r=>t(r.title));
+ if(t(s.setting)||t(s.theme)||t(s.visual)||t(s.audio)||refs.length){P('## 世界観・雰囲気');kv('舞台',s.setting);kv('テーマ',s.theme);kv('ビジュアル',s.visual);kv('音',s.audio);B();
+  if(refs.length){P('**参考作品・資料**');refs.forEach(r=>P(`- ${t(r.title)}${t(r.borrow)?'：'+t(r.borrow):''}`));B();}}
+ if(nn(s.rules)||nn(s.notNow)||nn(s.ideas)||nn(s.open)){P('## 方針とスコープ');
+  [['絶対に守る方針',s.rules],['今回は入れないもの',s.notNow],['アイデア置き場',s.ideas],['未決定事項',s.open]].forEach(([l,a])=>{if(nn(a)){P(`**${l}**`);list(a);B();}});}
+ if(t(s.question)||nn(s.next)){P('## 次に作るもの');para('プロトタイプで確かめたいこと',s.question);if(nn(s.next)){list(s.next);B();}}
+ while(out.length&&out[out.length-1]==='')out.pop();
+ return out.join('\n')+'\n';}
+
+function inl(x){return esc(x).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');}
+function mdHTML(md){const L=md.split('\n');let h='',lt=null,para=[];
+ const fl=()=>{if(para.length){h+=`<p>${para.join('<br>')}</p>`;para=[];}};
+ const cl=()=>{if(lt){h+=`</${lt}>`;lt=null;}};
+ for(const ln of L){let m;
+  if(!ln.trim()){fl();cl();continue;}
+  if(m=ln.match(/^(#{1,3}) (.*)/)){fl();cl();const n=m[1].length;h+=`<h${n}>${inl(m[2])}</h${n}>`;continue;}
+  if(m=ln.match(/^> (.*)/)){fl();cl();h+=`<blockquote>${inl(m[1])}</blockquote>`;continue;}
+  if(m=ln.match(/^- (.*)/)){fl();if(lt!=='ul'){cl();h+='<ul>';lt='ul';}h+=`<li>${inl(m[1])}</li>`;continue;}
+  if(m=ln.match(/^\d+\. (.*)/)){fl();if(lt!=='ol'){cl();h+='<ol>';lt='ol';}h+=`<li>${inl(m[1])}</li>`;continue;}
+  cl();para.push(inl(ln));}
+ fl();cl();return h;}
+
+let pvT;function renderPreview(){clearTimeout(pvT);pvT=setTimeout(()=>{const md=toMD(S());
+ $('#sheet').innerHTML=md.split('\n').length<3?`<h1>${esc(t(S().title)||'無題の企画')}</h1><p class="empty-doc">左の質問に答えると、ここに企画書が1枚にまとまっていきます。</p>`:mdHTML(md);},120);}
+
+/* ---------- finish ---------- */
+let outMode='md';
+function consultText(){return `以下は私が考えているゲームの企画メモです。読んで、次の観点でレビューしてください。
+1. 一言コンセプト・フック・デザインピラー・コアループが、同じ体験を目指しているか（ずれている所の指摘）
+2. 「作りたい体験」を実現するうえで足りないルールや仕組み
+3. 最初のプロトタイプで確かめるべきことが適切か、もっと小さくできるか
+4. 未決定事項について、判断材料になる問い
+
+---
+${toMD(S())}`;}
+function outText(){if(outMode==='md')return toMD(S());if(outMode==='ask')return consultText();return JSON.stringify(S(),null,2);}
+function finishH(){const c=checks(S());
+ const items=c.length?c.map(x=>`<li><span class="tag ${x.lv}">${x.lv==='warn'?'要記入':'ヒント'}</span><span>${esc(x.tx)}</span><button type="button" class="jump" data-step="${x.st}">${SECTIONS[x.st].title}へ</button></li>`).join(''):`<li><span class="tag ok">OK</span><span>大きな抜けはありません。プレビューを読み通して、ピラーとコアループが同じ体験を向いているか確かめましょう。</span></li>`;
+ return `<div class="fields">
+ <div class="field"><span class="label">チェック</span><p class="hint">企画の芯（コンセプト・ピラー・ループ・やらないこと）を中心に、抜けを確認します。</p><ul class="checks">${items}</ul></div>
+ <div class="field"><span class="label" id="outLbl">書き出し</span>
+  <div class="seg" role="group" aria-labelledby="outLbl">
+   <button type="button" data-act="mode" data-v="md" aria-pressed="${outMode==='md'}">Markdown</button>
+   <button type="button" data-act="mode" data-v="ask" aria-pressed="${outMode==='ask'}">AIへの相談文つき</button>
+   <button type="button" data-act="mode" data-v="json" aria-pressed="${outMode==='json'}">バックアップ（JSON）</button></div>
+  <p class="hint" id="outHint"></p>
+  <textarea id="out" class="out" readonly aria-label="書き出し内容"></textarea>
+  <div class="exp-actions"><button type="button" class="btn primary" data-act="copy">コピー</button></div></div>
+ <details class="imp"><summary>バックアップから読み込む</summary>
+  <div class="field"><label class="label" for="impText">バックアップ（JSON）を貼り付け</label><p class="hint">新しい企画として追加されます。今の企画は上書きされません。</p>
+  <textarea id="impText" rows="5" placeholder='{"title": "..."}'></textarea><div class="exp-actions"><button type="button" class="btn" data-act="import">読み込む</button></div></div></details>
+ </div>`;}
+function updateOut(){const o=$('#out');if(!o)return;o.value=outText();
+ $('#outHint').textContent=outMode==='md'?'Notion、Obsidian、GitHubなどにそのまま貼り付けられます。':outMode==='ask'?'Claudeなどに貼り付けると、企画の一貫性をレビューしてもらえます。':'別の端末やブラウザに移すときに使います。下の「バックアップから読み込む」に貼り付けると復元できます。';}
+
+/* ---------- events ---------- */
+function toast(m){const el=$('#toast');el.textContent=m;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,2600);}
+function touch(){doc().updated=Date.now();save();renderNav();renderPreview();refreshDocSel();}
+
+$('#form').addEventListener('input',e=>{const el=e.target;const k=el.dataset.k;if(!k)return;const s=S();
+ if(el.dataset.sub!==undefined)s[k][+el.dataset.i][el.dataset.sub]=el.value;
+ else if(el.dataset.i!==undefined)s[k][+el.dataset.i]=el.value;
+ else s[k]=el.value;
+ if(k==='loop')renderLoopViz();
+ if(k==='title')refreshDocSel();
+ touch();});
+
+const blankItem=k=>{const s=S();const f=SECTIONS.flatMap(x=>x.fields||[]).find(x=>x.k===k);if(f.type==='cards'){const o={};f.sub.forEach(sf=>o[sf.k]='');return o;}return '';};
+$('#form').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.step!==undefined){go(+b.dataset.step);return;}
+ const a=b.dataset.act;if(!a)return;const s=S(),k=b.dataset.k,i=+b.dataset.i;
+ if(a==='next'){go(step+1);return;} if(a==='prev'){go(step-1);return;}
+ if(a==='mode'){outMode=b.dataset.v;document.querySelectorAll('[data-act="mode"]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===outMode));updateOut();return;}
+ if(a==='copy'){const txt=outText();const o=$('#out');
+  const fb=()=>{o.focus();o.select();toast('自動でコピーできませんでした。選択済みの文字を Ctrl+C（⌘C）でコピーしてください。');};
+  try{navigator.clipboard.writeText(txt).then(()=>toast('コピーしました')).catch(fb);}catch(err){fb();}return;}
+ if(a==='import'){const raw=$('#impText').value;try{const d=JSON.parse(raw);if(!d||typeof d!=='object'||Array.isArray(d))throw 0;
+   const base=blank();Object.keys(base).forEach(key=>{if(d[key]!==undefined&&typeof d[key]===typeof base[key]&&Array.isArray(d[key])===Array.isArray(base[key]))base[key]=d[key];});
+   const id=newId();store.docs[id]={data:base,updated:Date.now()};store.current=id;save();refreshDocSel();go(0);toast('読み込みました');}
+  catch(err){toast('読み込めませんでした。「バックアップ（JSON）」でコピーした内容をそのまま貼り付けてください。');}return;}
+ if(a==='chip'){const f=SECTIONS[step].fields.find(x=>x.k===k);const v=b.dataset.v;
+  if(f.single){s[k]=s[k]===v?'':v;}else{s[k]=s[k].includes(v)?s[k].filter(x=>x!==v):[...s[k],v];}
+  if(f.single)b.parentElement.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===s[k]));
+  else b.setAttribute('aria-pressed',s[k].includes(v));
+  touch();return;}
+ if(a==='add'){s[k].push(blankItem(k));renderForm();touch();const n=s[k].length-1;const f=$(`[data-k="${k}"][data-i="${n}"]`);if(f)f.focus();return;}
+ if(a==='del'){s[k].splice(i,1);renderForm();touch();return;}
+ if(a==='up'&&i>0){[s[k][i-1],s[k][i]]=[s[k][i],s[k][i-1]];renderForm();touch();$(`[data-act="up"][data-k="${k}"][data-i="${i-1}"]`)?.focus();return;}
+ if(a==='down'&&i<s[k].length-1){[s[k][i+1],s[k][i]]=[s[k][i],s[k][i+1]];renderForm();touch();$(`[data-act="down"][data-k="${k}"][data-i="${i+1}"]`)?.focus();return;}
+});
+$('#stepList').addEventListener('click',e=>{const b=e.target.closest('button[data-step]');if(b)go(+b.dataset.step);});
+function go(n){step=Math.max(0,Math.min(SECTIONS.length-1,n));renderNav();renderForm();setView('form');
+ const f=$('#form');const r=f.getBoundingClientRect();if(r.top<0)f.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+ const cur=$('#stepList [aria-current="step"]');if(cur&&cur.scrollIntoView)cur.scrollIntoView({block:'nearest',inline:'nearest'});}
+
+/* view toggle (narrow screens) */
+function setView(v){$('#app').classList.toggle('show-preview',v==='prev');$('#vForm').setAttribute('aria-pressed',v!=='prev');$('#vPrev').setAttribute('aria-pressed',v==='prev');}
+$('#vForm').onclick=()=>setView('form');$('#vPrev').onclick=()=>setView('prev');
+
+/* docs */
+function refreshDocSel(){const sel=$('#docSel');const ids=Object.keys(store.docs).sort((a,b)=>store.docs[b].updated-store.docs[a].updated);
+ sel.innerHTML=ids.map(id=>`<option value="${id}"${id===store.current?' selected':''}>${esc(t(store.docs[id].data.title)||'無題の企画')}</option>`).join('');
+ $('#banner').hidden=!doc().sample;}
+$('#docSel').onchange=e=>{store.current=e.target.value;save();disarm();refreshDocSel();go(0);renderPreview();};
+function newBlank(){const id=newId();store.docs[id]={data:blank(),updated:Date.now()};store.current=id;save();refreshDocSel();go(0);renderPreview();toast('新しい企画を作りました');}
+$('#newDoc').onclick=newBlank;
+$('#startBlank').onclick=()=>{const old=store.current;delete store.docs[old];newBlank();};
+let armed=false;function disarm(){armed=false;const b=$('#delDoc');b.textContent='この企画を削除';b.classList.remove('danger-armed');}
+$('#delDoc').onclick=()=>{const b=$('#delDoc');
+ if(!armed){armed=true;b.textContent='もう一度押すと削除';b.classList.add('danger-armed');setTimeout(()=>{if(armed)disarm();},4000);return;}
+ disarm();delete store.docs[store.current];const ids=Object.keys(store.docs);
+ if(ids.length){store.current=ids.sort((a,b)=>store.docs[b].updated-store.docs[a].updated)[0];}else{const id=newId();store.docs[id]={data:blank(),updated:Date.now()};store.current=id;}
+ save();refreshDocSel();go(0);renderPreview();toast('削除しました');};
+
+/* init */
+load();refreshDocSel();renderNav();renderForm();renderPreview();
+</script>
+</body>
+</html>
