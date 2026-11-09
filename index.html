@@ -88,9 +88,9 @@ button,input,textarea,select{font:inherit;color:inherit}
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .label{font-weight:700;font-size:15px}
 .hint{font-size:13px;color:var(--ink-2);margin:-2px 0 2px;max-width:62ch}
-input[type=text],textarea{width:100%;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:9px 12px;line-height:1.6}
+input[type=text],input[type=url],input[type=password],input[type=date],textarea{width:100%;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:9px 12px;line-height:1.6}
 textarea{resize:vertical;min-height:64px}
-input[type=text]:focus,textarea:focus{background:var(--sheet);border-color:var(--cobalt);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--cobalt) 18%,transparent)}
+input[type=text]:focus,input[type=url]:focus,input[type=password]:focus,input[type=date]:focus,textarea:focus{background:var(--sheet);border-color:var(--cobalt);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--cobalt) 18%,transparent)}
 ::placeholder{color:var(--ink-2);opacity:.6}
 .rows{display:flex;flex-direction:column;gap:6px}
 .row{display:flex;gap:6px;align-items:center}
@@ -148,6 +148,106 @@ details.imp .field{margin-top:10px}
 
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:6px;font-size:14px;max-width:calc(100% - 32px);z-index:10}
 
+/* ---------- v2: genre questions / review / mood board / playtests / compare / share / print ---------- */
+.btn.sm{padding:3px 10px;font-size:12.5px}
+.btn:disabled{opacity:.5;cursor:default}
+.linkbtn{border:0;background:transparent;color:var(--cobalt);cursor:pointer;padding:0;font-size:13px;text-decoration:underline;text-underline-offset:2px;align-self:flex-start}
+.gsug{font-size:13px;background:var(--soft);border-radius:6px;padding:6px 10px;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.gq{border:1px dashed var(--cobalt);border-radius:8px;padding:14px 16px 16px;display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.gq-name{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--cobalt);margin:0}
+.gq .label{font-size:14px}
+.tag.q{color:var(--marker-ink);background:var(--marker);border-color:var(--marker)}
+.checks .ops{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.checks .jump.mute{color:var(--ink-2)}
+.notice{background:var(--soft);border-radius:6px;padding:10px 14px;font-size:13px;margin:0;max-width:70ch}
+.notice.warn{border-left:3px solid var(--warn)}
+.notice ul{margin:4px 0 0;padding-left:1.2em}
+fieldset.checkrow{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
+fieldset.checkrow legend{font-size:13px;color:var(--ink-2);padding:0;margin-bottom:4px}
+.checkrow label,.pv-tools label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+input[type=checkbox]{accent-color:var(--cobalt);width:16px;height:16px;margin:0}
+.label.sm{font-size:13px}
+.share-url{font-family:var(--f-mono);font-size:12px}
+.mood-add{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.mood-add input{flex:1 1 220px;min-width:0}
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.mood{border:1px solid var(--rule);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;margin:0;background:var(--sheet);min-width:0}
+.mood .thumb{aspect-ratio:4/3;background:var(--soft);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--ink-2);font-size:12px;text-align:center;padding:8px}
+.mood .thumb:has(img){padding:0}
+.mood .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.mood .mbody{padding:8px 10px 10px;display:flex;flex-direction:column;gap:6px}
+.mood .mhead{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2)}
+.mood .mhead .mk{font-family:var(--f-mono);flex:1}
+.mood .mhead a{color:var(--cobalt)}
+.mood .mhead .icon{width:28px;height:28px}
+.mood input[type=text],.mood textarea{font-size:13px;padding:6px 8px}
+.mood-grid.sm{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:6px}
+.mood figcaption{padding:6px 8px;font-size:12px;line-height:1.5;display:flex;flex-direction:column;gap:2px}
+.mood figcaption a{color:inherit}
+.card .sublabel{font-size:12px;color:var(--ink-2);display:block;margin-bottom:4px}
+.card .chips .chip{padding:4px 12px;font-size:13px}
+.pt-send{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pt-send .sublabel{width:100%;margin:0}
+.pv-tools{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:0 4px 10px;font-size:12.5px;color:var(--ink-2)}
+.pv-tools .btn{margin-left:auto}
+.sheet .appendix{margin-top:26px;padding-top:4px;border-top:2px solid var(--ink)}
+.cmp{max-width:1440px;margin:0 auto;padding:4px 16px 48px}
+.cmp-in{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:28px clamp(16px,4vw,36px)}
+.cmp-legend{font-size:13px;color:var(--ink-2);margin:0 0 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cg{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.cg-row{display:grid;grid-template-columns:170px minmax(0,1fr) minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);align-items:start}
+.cg-l{font-weight:700;font-size:14px;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.dmark{font-family:var(--f-mono);font-size:11px;font-weight:500;background:var(--marker);color:var(--marker-ink);border-radius:4px;padding:1px 6px}
+.cg-c{min-width:0;font-size:14px;display:flex;flex-direction:column;gap:8px}
+.cg-top select{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:6px 10px;width:100%;font-weight:700}
+.cg .none{color:var(--ink-2)}
+.chipset{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ci{border:1px solid var(--rule);border-radius:999px;padding:2px 10px;font-size:13px}
+.ci.only{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.chipset .ar{color:var(--ink-2)}
+.cg-judge .btn{align-self:flex-start}
+body.comparing .app,body.comparing .viewtoggle,body.comparing .banner{display:none!important}
+.viewer{max-width:900px;margin:0 auto;padding:0 16px 48px;display:flex;flex-direction:column;gap:14px}
+.vbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:12px 16px}
+.vbar > div:first-child{display:flex;flex-direction:column}
+.vpw{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:8px}
+body.viewing .docbar,body.viewing .banner,body.viewing .viewtoggle,body.viewing .app,body.viewing .cmp{display:none!important}
+.viewer .sheet{max-height:none;overflow:visible}
+dialog{border:1px solid var(--rule);border-radius:10px;background:var(--sheet);color:var(--ink);padding:22px;width:min(440px,calc(100% - 32px))}
+dialog::backdrop{background:rgba(10,14,30,.45)}
+.dlg{display:flex;flex-direction:column;gap:8px}
+.dlg h2{font-family:var(--f-display);font-weight:400;font-size:20px;margin:0 0 4px}
+.dlg .exp-actions{justify-content:flex-end;margin-top:8px}
+@media (max-width:720px){
+  .cg-row{grid-template-columns:minmax(0,1fr);gap:6px}
+  .cg-c::before{content:attr(data-side);font-family:var(--f-mono);font-size:11px;color:var(--ink-2)}
+  .cg-top .cg-l{display:none}
+}
+@media print{
+  @page{size:A4;margin:9mm 10mm}
+  :root,:root[data-theme]{color-scheme:light!important;--paper:#fff!important}
+  html,body{background:#fff!important;background-image:none!important;color:#18203A!important}
+  .topbar,.banner,.viewtoggle,.steps,.form,.toast,.pv-head,.pv-tools,.vbar,.vpw,.cmp,dialog{display:none!important}
+  .app{display:block!important;padding:0!important;max-width:none!important}
+  .viewer{padding:0;max-width:none}
+  .app .preview{display:block!important;position:static!important;max-height:none!important}
+  .sheet{--sheet:#fff;--ink:#18203A;--ink-2:#4F5979;--rule:#D3D9E6;--cobalt:#2448C9;--marker:#FFE066;--marker-ink:#18203A;--soft:#E4E9F6;
+    background:#fff!important;color:#18203A!important;border:0!important;box-shadow:none!important;padding:0!important;overflow:visible!important;max-height:none!important;
+    font-size:8.2pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet h1{font-size:15pt;margin:0 0 4px}
+  .sheet blockquote{padding:5px 9px;margin:0 0 4px}
+  .sheet .sh-head p{margin:2px 0}
+  .sheet .sh-body{column-count:3;column-gap:5mm;margin-top:6px}
+  .sheet h2{margin:8px 0 3px;font-size:7.4pt;break-after:avoid}
+  .sheet p{margin:2px 0}
+  .sheet ul,.sheet ol{margin:2px 0;padding-left:1.15em}
+  .sheet .sh-body > h2:first-child{margin-top:0}
+  .sheet h3{font-size:8.6pt;margin:5px 0 1px;break-after:avoid}
+  .sheet p,.sheet li,.sheet blockquote,.mood{break-inside:avoid}
+  .sheet .appendix{break-before:page;border-top:0;margin-top:0}
+  .sheet a{color:inherit;text-decoration:none}
+}
+
 @media (max-width:1080px){
   .viewtoggle{display:flex}
   .app{grid-template-columns:minmax(0,1fr)}
@@ -173,6 +273,8 @@ details.imp .field{margin-top:10px}
     <label for="docSel" class="hint" style="margin:0">企画</label>
     <select id="docSel"></select>
     <button class="btn" id="newDoc" type="button">＋ 新しい企画</button>
+    <button class="btn" id="dupDoc" type="button">別案を作る</button>
+    <button class="btn" id="cmpBtn" type="button">比較</button>
     <button class="btn" id="delDoc" type="button">この企画を削除</button>
   </div>
 </div>
@@ -189,9 +291,24 @@ details.imp .field{margin-top:10px}
   <section class="form" id="form" aria-live="off"></section>
   <aside class="preview" aria-label="企画書プレビュー">
     <div class="pv-head"><span>ONE-PAGE PREVIEW</span><span id="pvPct"></span></div>
+    <div class="pv-tools"><span>付録</span><label><input type="checkbox" class="exopt" data-ex="mood"> ムードボード</label><label><input type="checkbox" class="exopt" data-ex="tests"> 検証日誌</label><button type="button" class="btn sm" data-print>印刷・PDF</button></div>
     <article class="sheet" id="sheet"></article>
   </aside>
 </main>
+<section class="cmp" id="cmp" hidden><div class="cmp-in" id="cmpIn"></div></section>
+<section class="viewer" id="viewer" hidden>
+  <div class="vbar"><div><strong>読み取り専用で表示しています</strong><span class="hint" style="margin:0">この企画は共有リンクの中に入っています。編集はできません。</span></div>
+    <div class="exp-actions"><button type="button" class="btn primary" id="vImport" hidden>自分のノートに取り込む</button><button type="button" class="btn" data-print>印刷・PDF</button><button type="button" class="btn" id="vClose">自分のノートを開く</button></div></div>
+  <form class="vpw" id="vPw" hidden><label class="label" for="vPwIn">パスワードが必要です</label><p class="hint">共有した人から聞いたパスワードを入力してください。</p>
+    <div class="mood-add"><input type="password" id="vPwIn" autocomplete="off"><button class="btn primary">開く</button></div><p class="notice warn" id="vPwErr" hidden>パスワードが違うか、リンクが壊れています。</p></form>
+  <article class="sheet" id="vSheet"></article>
+</section>
+<dialog id="dupDlg"><form method="dialog" class="dlg">
+  <h2>別案を作る</h2><p class="hint">いまの企画を複製します。どこが違う案なのか分かる名前を付けましょう。</p>
+  <label class="label sm" for="dupName">新しい案の名前</label><input type="text" id="dupName" placeholder="例：探索中心版">
+  <label class="label sm" for="dupOrig">いまの案の名前（任意）</label><input type="text" id="dupOrig" placeholder="例：戦闘中心版">
+  <div class="exp-actions"><button class="btn primary" value="ok">複製する</button><button type="button" class="btn" id="dupCancel">やめる</button></div>
+</form></dialog>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -205,6 +322,59 @@ const FUNS=[
  {k:'expression',l:'表現',d:'自分らしさを作って見せる'},
  {k:'submission',l:'没頭',d:'気楽に繰り返して時間を忘れる'}];
 const HOOKS=['仕組み','物語','見た目・音','感情','メタ','スケール'];
+const GENRES=[{k:'roguelite',l:'ローグライト'},{k:'puzzle',l:'パズル'},{k:'adv',l:'アドベンチャー・ノベル'},{k:'action',l:'アクション'},{k:'rpg',l:'RPG'},{k:'sim',l:'シミュレーション・経営'},{k:'strategy',l:'ストラテジー'},{k:'other',l:'その他'}];
+const GENRE_KW=[['roguelite',/ローグ|rogue/i],['puzzle',/パズル|puzzle|謎解き/i],['adv',/ADV|アドベンチャー|ノベル|adventure|novel/i],['strategy',/ストラテジー|戦略|strategy|SLG|RTS|タクティ|SRPG|シミュレーションRPG/i],['rpg',/RPG|ロールプレイ/i],['sim',/シミュレーション|シミュ|経営|育成|タイクーン|農場|simulat/i],['action',/アクション|action|シューティング|STG|プラットフォーマー|格闘/i]];
+/* ジャンル別の問い：st はそれを表示するステップのID */
+const GQ={
+ roguelite:[
+  {id:'rl_run',st:'concept',q:'1回のラン（周回）は、どこから始まり、何が起きたら終わりますか？',ph:'例：港を出て潜り始め、浮上するか倒れたら終わり'},
+  {id:'rl_death',st:'experience',q:'倒れたとき、プレイヤーには何を感じてほしいですか？（悔しさ・「次はこうする」・笑い など）',ph:'例：「欲張りすぎた」と自分の判断を振り返れる悔しさ'},
+  {id:'rl_vary',st:'loop',q:'ランごとに毎回変わるもの（地形・報酬・敵・ビルド）は何ですか？',ph:'例：層の地形、遺物の位置、出てくる生物の組み合わせ'},
+  {id:'rl_meta',st:'loop',q:'周回をまたいで残るもの（メタ成長・解放・知識）は何ですか？',ph:'例：持ち帰った宝での装備改良、生物図鑑'},
+  {id:'rl_build',st:'systems',q:'ビルド（強化の組み合わせ）は、何と何の掛け算で生まれますか？',ph:'例：ランタンの種類 × 潜水服の特性'},
+  {id:'rl_luck',st:'systems',q:'運と実力の比率はどのくらいですか？運が悪いときの救済は？',ph:'例：地形と遺物の位置は運、灯りの使い方は実力。7:3で実力寄り'},
+  {id:'rl_min',st:'scope',q:'最初の版に必要な最小の中身（敵・アイテム・層の数）は？',ph:'例：3層、敵5種、遺物10個'}],
+ puzzle:[
+  {id:'pz_rule',st:'concept',q:'プレイヤーが発見する中心のルールは何ですか？（言葉で教えずに気づかせたいこと）',ph:'例：影の中にあるものだけが動かせる'},
+  {id:'pz_aha',st:'experience',q:'「ひらめき」の瞬間は、どんな気づきから生まれますか？',ph:'例：自分の影も道具として使えると気づいたとき'},
+  {id:'pz_teach',st:'loop',q:'新しいルールをどの順で教えますか？（導入 → 応用 → ひねり）',ph:'例：1面で影の存在、3面で影を伸ばす、5面で自分の影'},
+  {id:'pz_stuck',st:'loop',q:'詰まったときの救済（ヒント・スキップ・やり直し）は？',ph:'例：30秒動かないと、注目すべき物が少し光る'},
+  {id:'pz_combine',st:'systems',q:'ルール同士の組み合わせで、新しい問題をどう作りますか？',ph:'例：光源の数 × 動かせる物の重さ'},
+  {id:'pz_count',st:'scope',q:'最初の版で作る問題数と、ルールの数は？',ph:'例：ルール3つ、問題20問'}],
+ adv:[
+  {id:'adv_choice',st:'concept',q:'プレイヤーの選択は何を変えますか？（結末・人間関係・手に入る情報）',ph:'例：誰を信じるかで、最後に明かされる真相が変わる'},
+  {id:'adv_emotion',st:'experience',q:'感情を動かすのは、物語の展開ですか、プレイヤー自身の行動ですか？',ph:'例：自分で証拠を突きつけた瞬間に感情が動くようにしたい'},
+  {id:'adv_flow',st:'loop',q:'「読む・調べる・選ぶ・操作する」の割合はどのくらいですか？',ph:'例：読む4、調べる3、選ぶ2、操作1'},
+  {id:'adv_branch',st:'loop',q:'分岐や周回をどう扱いますか？（1本道／分岐／周回で真相）',ph:'例：大きな分岐は2回だけ。2周目で別視点が解放'},
+  {id:'adv_cast',st:'world',q:'物語の中心にいる人物は誰で、プレイヤーとどんな関係ですか？',ph:'例：記憶をなくした依頼人。プレイヤーは彼女の弁護人'},
+  {id:'adv_volume',st:'scope',q:'シナリオの分量（文字数・場面数）の見積もりは？',ph:'例：約8万字、場面30'}],
+ action:[
+  {id:'ac_feel',st:'experience',q:'基本動作の気持ちよさは、入力から反応までのどこで作りますか？',ph:'例：ダッシュの出始めの速さと、止まるときの慣性'},
+  {id:'ac_read',st:'loop',q:'敵や障害物との読み合いは、どんなパターンで生まれますか？',ph:'例：予備動作を見てから避けると反撃のすきができる'},
+  {id:'ac_skill',st:'loop',q:'うまくなったことを、プレイヤーは何で実感しますか？',ph:'例：ノーダメージの評価、クリアタイム'},
+  {id:'ac_diff',st:'systems',q:'難易度はどう上げますか？（敵の数・速さ・組み合わせ・地形）',ph:'例：敵の種類を増やすより、組み合わせで難しくする'},
+  {id:'ac_min',st:'scope',q:'手触りを確かめるのに必要な最小の動作と敵は？',ph:'例：移動・ジャンプ・攻撃と、敵2種'}],
+ rpg:[
+  {id:'rpg_role',st:'experience',q:'プレイヤーはどんな役割・生き方を演じますか？',ph:'例：旅の薬師として、戦わずに村を救う'},
+  {id:'rpg_grow',st:'loop',q:'成長の手ごたえは、どの瞬間に感じますか？',ph:'例：前に負けた敵を新しい技で倒せたとき'},
+  {id:'rpg_battle',st:'loop',q:'戦闘で毎回考えることは何ですか？',ph:'例：誰に回復を回すか、いつ切り札を切るか'},
+  {id:'rpg_nonbattle',st:'systems',q:'戦闘以外の遊び（探索・会話・収集）は、成長とどうつながりますか？',ph:'例：会話で得た噂から、隠し素材の場所が分かる'},
+  {id:'rpg_volume',st:'scope',q:'クリアまでの長さに対して、必要な中身（町・ダンジョン・敵）の見積もりは？',ph:'例：町4、ダンジョン6、敵40種'}],
+ sim:[
+  {id:'sim_goal',st:'experience',q:'プレイヤーが最適化したくなる数値や状態は何ですか？',ph:'例：客の満足度と、1日の売上'},
+  {id:'sim_idle',st:'loop',q:'放置して見守る時間と、手を入れる時間のバランスは？',ph:'例：営業中は見守り、閉店後に配置を変える'},
+  {id:'sim_feedback',st:'loop',q:'自分の判断の結果は、何を見るとすぐに分かりますか？',ph:'例：客の吹き出しと、行列の長さ'},
+  {id:'sim_fail',st:'systems',q:'失敗や赤字から、どう立て直せますか？',ph:'例：借金はできるが、評判が下がる'},
+  {id:'sim_end',st:'scope',q:'どこまで行ったら「1つの区切り」ですか？',ph:'例：1年経営して、町一番の店になる'}],
+ strategy:[
+  {id:'st_decide',st:'experience',q:'1手の重さはどのくらいですか？（取り返せる／取り返せない）',ph:'例：ユニットは失うと戻らない。1手の重みを感じてほしい'},
+  {id:'st_info',st:'loop',q:'判断の材料になる情報は、どこまで見えていますか？',ph:'例：敵の次の行動は見えるが、増援は見えない'},
+  {id:'st_paths',st:'loop',q:'勝ち筋はいくつ用意しますか？',ph:'例：殲滅・拠点制圧・脱出の3つ'},
+  {id:'st_ai',st:'systems',q:'相手（AI・プレイヤー）は何を考えて動きますか？',ph:'例：弱ったユニットを優先して狙う'},
+  {id:'st_units',st:'scope',q:'最初の版で必要なユニット・カード・マップの数は？',ph:'例：ユニット6種、マップ3枚'}]};
+const PT_STATUS=[{k:'ok',l:'確認できた'},{k:'part',l:'一部確認'},{k:'no',l:'確認できなかった'},{k:'none',l:'未確認'}];
+const VERDICTS=[{k:'adopt',l:'採用'},{k:'hold',l:'保留'},{k:'reject',l:'不採用'}];
+const MOOD_L={image:'画像',local:'取り込んだ画像',music:'音楽・動画',link:'リンク'};
 
 const SECTIONS=[
  {id:'basics',title:'基本情報',lead:'まず企画の外枠を決めます。誰が、何で、どのくらいの時間遊ぶゲームか。',
@@ -212,9 +382,12 @@ const SECTIONS=[
   fields:[
    {k:'title',type:'text',label:'仮タイトル',ph:'例：ランタンダイバー'},
    {k:'genre',type:'text',label:'ジャンル',ph:'例：探索ローグライト'},
+   {k:'genreTpl',type:'chips',single:true,opt:true,sug:true,label:'ジャンルの型（任意）',options:GENRES,hint:'選ぶと、各ステップの最後に「そのジャンルならではの問い」が出ます。記入率には数えません。'},
    {k:'platform',type:'text',label:'プラットフォーム・操作デバイス',ph:'例：PC / Switch（パッド前提）'},
-   {k:'playtime',type:'text',label:'1回のプレイ時間と全体のボリューム',ph:'例：1プレイ10分、クリアまで5〜8時間'},
-   {k:'audience',type:'textarea',label:'誰に遊んでほしいか',ph:'例：仕事終わりに短く遊びたいローグライト経験者',hint:'年齢よりも「どんな遊び方をする人か」「何が好きな人か」で書くと、設計の判断に使えます。'}]},
+   {k:'playtime',type:'text',label:'1回のプレイ時間と全体のボリューム',ph:'例：1プレイ10分、クリアまで5〜8時間',hint:'「1回の長さ」と「全体の長さ」を読点で区切って書くと、スコープチェックに使われます。'},
+   {k:'audience',type:'textarea',label:'誰に遊んでほしいか',ph:'例：仕事終わりに短く遊びたいローグライト経験者',hint:'年齢よりも「どんな遊び方をする人か」「何が好きな人か」で書くと、設計の判断に使えます。'},
+   {k:'team',type:'text',opt:true,label:'制作人数（任意）',ph:'例：1人（音は外注）'},
+   {k:'period',type:'text',opt:true,label:'制作期間（任意）',ph:'例：6か月（週末中心）',hint:'人数と期間を書くと、仕上げの「見直したい点」で、要素が多すぎないかを確かめられます。'}]},
  {id:'concept',title:'一言コンセプト',lead:'このゲームを1〜2文で言い切ります。迷ったときに立ち返る一文です。',
   idea:{name:'ハイコンセプトとフック',text:'ハイコンセプトは「プレイヤーが何をするか」を主語に書きます。起きる出来事ではなく、プレイヤーの行動です。フックは、似た作品と並んだときにこのゲームを選ぶ理由です。',
    qs:['型：「【ジャンル】で、プレイヤーは【主な行動】をして【目的】を目指す。【フック】が特徴。」','人に30秒で説明するとしたら、最初に何を言いますか？']},
@@ -259,7 +432,8 @@ const SECTIONS=[
    {k:'theme',type:'text',label:'テーマ',ph:'例：未知への好奇心と、引き際の判断'},
    {k:'visual',type:'textarea',label:'ビジュアルの方向性',ph:'例：暗い青黒の画面に、灯りの届く範囲だけ色が乗るドット絵'},
    {k:'audio',type:'textarea',label:'音楽・効果音の方向性',ph:'例：環境音中心。水音、遠い鳴き声、心拍のような低音'},
-   {k:'refs',type:'cards',label:'参考作品・資料',primary:'title',sub:[{k:'title',l:'作品・資料',ph:'例：深海ドキュメンタリー'},{k:'borrow',l:'借りたいところ',ph:'例：生物の発光の色と動き'}]}]},
+   {k:'refs',type:'cards',label:'参考作品・資料',primary:'title',sub:[{k:'title',l:'作品・資料',ph:'例：深海ドキュメンタリー'},{k:'borrow',l:'借りたいところ',ph:'例：生物の発光の色と動き'}]},
+   {k:'mood',type:'mood',opt:true,label:'ムードボード（任意）',hint:'参考画像や音楽・動画のリンクに「何を参考にしたいか」を添えます。見た目だけでなく、意図まで伝わります。'}]},
  {id:'scope',title:'方針とスコープ',lead:'何を守り、何をやらないかを決めます。ここが一番、制作を楽にします。',
   idea:{name:'ワンページ・デザイン（ストーン・リブランデ）',text:'長い企画書は最初のページしか読まれない、という問題から生まれた考え方です。1ページで説明できない機能は、まだ作る準備ができていないサインでもあります。入れたいものは「アイデア置き場」へ逃がし、今回入れないものを明記しましょう。'},
   fields:[
@@ -272,23 +446,30 @@ const SECTIONS=[
   fields:[
    {k:'question',type:'textarea',label:'プロトタイプで確かめたいこと',ph:'例：「灯りを強める＝見つかる」だけで、潜行が緊張する判断の連続になるか'},
    {k:'next',type:'list',label:'次に作るもの',ph:['例：灯りと暗闇の表現だけのプロトタイプ','例：光に寄ってくる生物1種']}]},
- {id:'finish',title:'仕上げと書き出し',lead:'抜けている所をチェックし、企画書を書き出します。'}
+ {id:'tests',title:'検証日誌',lead:'試作品を遊んでもらったら、確かめたい問いに対して何が分かったかを記録します。',
+  idea:{name:'作って終わりにしない',text:'企画書は、試作で確かめて初めて役に立ちます。「結果（何が起きたか）」と「反応（プレイヤーが何をして、何と言ったか）」を分けて書き、次に変えることを1つ以上決めましょう。',
+   qs:['問いに対して、はっきり答えが出たか','予想と違ったプレイヤーの行動は何か','次の試作で変えることを1〜2個に絞れているか']},
+  fields:[{k:'playtests',type:'playtests',opt:true,label:'検証の記録'}]},
+ {id:'finish',title:'仕上げと書き出し',lead:'抜けや食い違いをチェックし、企画書を書き出したり共有したりします。'}
 ];
+const stepOf=id=>SECTIONS.findIndex(x=>x.id===id);
 
 function blank(){return{
- title:'',genre:'',platform:'',playtime:'',audience:'',
+ title:'',genre:'',genreTpl:'',platform:'',playtime:'',audience:'',team:'',period:'',
  concept:'',hook:'',hookType:'',comps:[{title:'',diff:''}],
  feelings:['','',''],fantasy:'',funs:[],moment:'',anti:['',''],
  pillars:[{name:'',desc:'',yes:'',no:''},{name:'',desc:'',yes:'',no:''},{name:'',desc:'',yes:'',no:''}],
  priorities:['操作の気持ちよさ','テンポ','戦略性','雰囲気'],
  loop:['','','',''],loopSession:'',loopLong:'',verbs:['','',''],camera:'',character:'',control:'',
  systems:[{name:'戦闘',content:''},{name:'成長',content:''},{name:'ステージ',content:''},{name:'報酬',content:''}],winLose:'',
- setting:'',theme:'',visual:'',audio:'',refs:[{title:'',borrow:''}],
- rules:['',''],notNow:[''],ideas:[''],open:[''],question:'',next:['']};}
+ setting:'',theme:'',visual:'',audio:'',refs:[{title:'',borrow:''}],mood:[],
+ rules:['',''],notNow:[''],ideas:[''],open:[''],question:'',next:[''],
+ playtests:[],gq:{},dismissed:[]};}
 
 function sample(){return{
- title:'ランタンダイバー（記入例）',genre:'探索ローグライト（2D横視点）',platform:'PC / Switch（パッド前提）',playtime:'1潜行10分前後、エンディングまで約6時間',
+ title:'ランタンダイバー（記入例）',genre:'探索ローグライト（2D横視点）',genreTpl:'roguelite',platform:'PC / Switch（パッド前提）',playtime:'1潜行10分前後、エンディングまで約6時間',
  audience:'ローグライトを何本か遊んだことがあり、短い時間で1回分の決着がつくゲームが好きな人。暗く静かな雰囲気が好きな人。',
+ team:'1人（音は外注）',period:'8か月（週末中心）',
  concept:'小さなランタンひとつで深海に潜り、灯りの残量をやりくりしながら、より深い場所の宝を持ち帰る探索ローグライト。',
  hook:'灯りが体力と視界を兼ねている。明るくすれば遠くまで見えるが、そのぶん早く尽き、深海生物にも見つかりやすくなる。',hookType:'仕組み',
  comps:[{title:'Spelunky',diff:'地形の即死より「暗さ」と「残量」の判断が中心'},{title:'Dredge',diff:'物語より、1回の潜行の駆け引きに集中する'}],
@@ -301,7 +482,7 @@ function sample(){return{
   {name:'静かな深海',desc:'派手さより気配。音と暗さで緊張を作る',yes:'遠くの生物の音だけが聞こえる',no:'常に流れる派手なBGM'}],
  priorities:['緊張感','判断の手ごたえ','雰囲気','操作の気持ちよさ','テンポ'],
  loop:['潜る','探す','灯りを使って判断する','宝を持ち帰る','装備を強化する'],
- loopSession:'港で装備を選ぶ → 3〜4層を潜る → 浮上または全滅 → 持ち帰った宝で強化',
+ loopSession:'港で装備を選ぶ → 3〜4層を潜る → 引き返すか、さらに潜るかを判断 → 浮上または全滅 → 持ち帰った宝で強化',
  loopLong:'新しい深度と生物の図鑑を埋める。最深部にある「沈んだ灯台」の謎を解く。',
  verbs:['泳ぐ','灯りの強さを変える','照明弾を投げる','拾う','浮上する'],
  camera:'2D横視点。見えるのは灯りの届く範囲だけ',character:'小柄な潜水士。重い装備ほど遅くなる',control:'左スティックで泳ぐ、トリガーで灯りの強弱',
@@ -309,40 +490,74 @@ function sample(){return{
  winLose:'浮上すれば成功（宝を獲得）。灯りが尽きるか、攻撃で倒れると失敗。',
  setting:'沈んだ港町の沖合いの深海',theme:'未知への好奇心と、引き際の判断',visual:'暗い青黒の画面に、灯りの届く範囲だけ色が乗るドット絵',audio:'環境音が中心。水音、遠い鳴き声、心拍のような低音',
  refs:[{title:'深海ドキュメンタリー映像',borrow:'生物の発光の色と動き'}],
+ mood:[{kind:'music',url:'https://www.youtube.com/results?search_query=deep+sea+ambient',src:'',title:'深海のアンビエント（検索結果）',note:'BGMではなく、環境音の重なりで不安を作る感じ'}],
  rules:['1潜行は15分を超えない','見えないことを理不尽にしない（音で必ず気配を伝える）','運より判断を重視する'],
  notNow:['マルチプレイ','会話の多いストーリー','クラフト要素'],ideas:['仲間の潜水士を雇う','拾った古い手紙で世界の背景を少しずつ知る'],
  open:['倒れたときに何を残すか（すべて失う／一部残る）','操作をパッド専用にするか'],
  question:'「灯りを強める＝見つかる」というルールだけで、1回の潜行が緊張する判断の連続になるか。',
- next:['灯りと暗闇の表現だけのプロトタイプ','光に寄ってくる生物1種','1層だけで浮上して終わるループ']};}
+ next:['灯りと暗闇の表現だけのプロトタイプ','光に寄ってくる生物1種','1層だけで浮上して終わるループ'],
+ playtests:[{date:'2026-11-01',build:'灯り表現だけの試作 v0.1',question:'「灯りを強める＝見つかる」というルールだけで、1回の潜行が緊張する判断の連続になるか。',status:'part',
+  result:'灯りを強めると敵が寄ってくることは伝わった。ただ、暗くしても得をしないため、ずっと明るくして進む人が多かった。',
+  reaction:'2人とも「暗くする理由がない」と話していた。遠くの鳴き声が聞こえた場面では、2人とも手を止めて灯りを落とした。',
+  change:'暗くしたときだけ見える「発光する手がかり」を置く\n敵の気配の音を左右に振り分ける'}],
+ gq:{rl_run:'港を出て潜り始め、浮上するか倒れたら終わり。',rl_meta:'持ち帰った宝での装備改良と、生物図鑑。',rl_luck:'地形と遺物の位置は運、灯りの使い方は実力。7:3で実力寄りにする。'},
+ dismissed:[]};}
 
 /* ---------- storage ---------- */
 const KEY='game-concept-note-v1';
-let store={current:null,docs:{}};
-function load(){try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);if(s&&s.docs&&Object.keys(s.docs).length)store=s;}}catch(e){}
- if(!store.current||!store.docs[store.current]){const id=newId();store.docs[id]={sample:true,data:sample(),updated:Date.now()};store.current=id;}}
-let saveT;function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}},250);}
+let store={current:null,docs:{},exp:{mood:false,tests:false}};
+const ITEM_KEYS={mood:['kind','url','src','title','note'],playtests:['date','build','question','status','result','reaction','change']};
+/* 読み込んだデータを今の形にそろえる（古い保存データ・バックアップ・共有リンクで共通） */
+function normalize(d){const base=blank();if(!d||typeof d!=='object'||Array.isArray(d))return base;
+ const FD=Object.fromEntries(SECTIONS.flatMap(x=>x.fields||[]).map(f=>[f.k,f]));
+ for(const k of Object.keys(base)){const v=d[k],b=base[k];if(v==null)continue;
+  if(Array.isArray(b)){if(!Array.isArray(v))continue;const f=FD[k];
+   const keys=ITEM_KEYS[k]||(f&&f.type==='cards'?f.sub.map(x=>x.k):null);
+   base[k]=keys?v.filter(o=>o&&typeof o==='object'&&!Array.isArray(o)).map(o=>Object.fromEntries(keys.map(x=>[x,typeof o[x]==='string'?o[x]:'']))):v.filter(x=>typeof x==='string');}
+  else if(typeof b==='object'){if(typeof v==='object'&&!Array.isArray(v))base[k]=Object.fromEntries(Object.entries(v).filter(([,x])=>typeof x==='string'));}
+  else if(typeof v==='string')base[k]=v;}
+ base.mood=base.mood.filter(m=>MOOD_L[m.kind]);
+ return base;}
+function load(){try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);if(s&&s.docs&&typeof s.docs==='object'&&Object.keys(s.docs).length)store=s;}}catch(e){}
+ for(const id of Object.keys(store.docs)){const d=store.docs[id];if(!d||typeof d!=='object'){delete store.docs[id];continue;}
+  d.data=normalize(d.data);if(typeof d.updated!=='number')d.updated=Date.now();
+  ['variant','verdict','reason','parent'].forEach(k=>{if(typeof d[k]!=='string')d[k]='';});}
+ store.exp=Object.assign({mood:false,tests:false},store.exp&&typeof store.exp==='object'?store.exp:{});
+ if(!store.current||!store.docs[store.current]){const ids=Object.keys(store.docs);
+  if(ids.length)store.current=ids.sort((a,b)=>store.docs[b].updated-store.docs[a].updated)[0];
+  else{const id=newId();store.docs[id]=mkDoc(sample(),{sample:true});store.current=id;}}}
+function mkDoc(data,extra){return Object.assign({data,updated:Date.now(),variant:'',verdict:'',reason:'',parent:''},extra||{});}
+function saveNow(){try{localStorage.setItem(KEY,JSON.stringify(store));return true;}catch(e){toast('保存できませんでした。ブラウザーの保存容量がいっぱいの可能性があります。取り込んだ画像を減らしてください。');return false;}}
+let saveT;function save(){clearTimeout(saveT);saveT=setTimeout(saveNow,250);}
 function newId(){return 'd'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function doc(){return store.docs[store.current];}
 function S(){return doc().data;}
+const byUpdated=(a,b)=>store.docs[b].updated-store.docs[a].updated;
+function sortedIds(){return Object.keys(store.docs).sort(byUpdated);}
+function docLabel(id){const d=store.docs[id];const v=(VERDICTS.find(x=>x.k===d.verdict)||{}).l;
+ return `${t(d.data.title)||'無題の企画'}${t(d.variant)?' ／ '+t(d.variant):''}${v?` ［${v}］`:''}`;}
 
 /* ---------- helpers ---------- */
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const t=v=>String(v??'').trim();
 const nn=a=>(a||[]).filter(x=>t(x)).length;
+const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 let step=0;
 
 function filled(f,s){const v=s[f.k];
  if(f.type==='list'||f.type==='ranked')return nn(v)>0;
  if(f.type==='chips')return f.single?!!t(v):(v||[]).length>0;
  if(f.type==='cards')return (v||[]).some(o=>t(o[f.primary]));
+ if(f.type==='mood'||f.type==='playtests')return (v||[]).length>0;
  return !!t(v);}
-function secProgress(sec,s){if(!sec.fields)return null;const n=sec.fields.filter(f=>filled(f,s)).length;return [n,sec.fields.length];}
+function secProgress(sec,s){const fs=(sec.fields||[]).filter(f=>!f.opt);if(!fs.length)return null;return [fs.filter(f=>filled(f,s)).length,fs.length];}
 
 /* ---------- render: nav ---------- */
 function renderNav(){const s=S();let tot=0,fil=0;
  $('#stepList').innerHTML=SECTIONS.map((sec,i)=>{const p=secProgress(sec,s);let ptxt='';
   if(p){tot+=p[1];fil+=p[0];ptxt=`<span class="p${p[0]===p[1]?' full':''}">${p[0]}/${p[1]}</span>`;}
+  else if(sec.id==='tests'&&s.playtests.length)ptxt=`<span class="p">${s.playtests.length}件</span>`;
   return `<li><button type="button" data-step="${i}"${i===step?' aria-current="step"':''}><span class="n">${String(i+1).padStart(2,'0')}</span><span>${sec.title}</span>${ptxt}</button></li>`;}).join('');
  const pct=tot?Math.round(fil/tot*100):0;
  $('#overallTxt').textContent=`記入率 ${pct}%`;$('#overallBar').style.width=pct+'%';$('#pvPct').textContent=`記入率 ${pct}%`;}
@@ -354,14 +569,61 @@ function fieldH(f,s){const v=s[f.k];
  if(f.type==='text')return `<div class="field"><label class="label" for="f-${f.k}">${f.label}</label>${hintH(f)}<input type="text" id="f-${f.k}" data-k="${f.k}" value="${esc(v)}" placeholder="${esc(f.ph)}"></div>`;
  if(f.type==='textarea')return `<div class="field"><label class="label" for="f-${f.k}">${f.label}</label>${hintH(f)}<textarea id="f-${f.k}" data-k="${f.k}" rows="${f.rows||3}" placeholder="${esc(f.ph)}">${esc(v)}</textarea></div>`;
  if(f.type==='chips'){const sel=f.single?[v]:(v||[]);
-  return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}<div class="chips${f.rich?' rich':''}">${f.options.map(o=>`<button type="button" class="chip" data-act="chip" data-k="${f.k}" data-v="${esc(o.k)}" aria-pressed="${sel.includes(o.k)}">${esc(o.l)}${o.d?`<small>${esc(o.d)}</small>`:''}</button>`).join('')}</div></div>`;}
+  return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}<div class="chips${f.rich?' rich':''}">${f.options.map(o=>`<button type="button" class="chip" data-act="chip" data-k="${f.k}" data-v="${esc(o.k)}" aria-pressed="${sel.includes(o.k)}">${esc(o.l)}${o.d?`<small>${esc(o.d)}</small>`:''}</button>`).join('')}</div>${f.sug?'<p class="gsug" id="gsug" hidden></p>':''}</div>`;}
  if(f.type==='list'||f.type==='ranked'){const rk=f.type==='ranked';
   const rows=v.map((x,i)=>`<div class="row"><span class="idx">${(rk||f.viz)?i+1:'・'}</span><input type="text" id="f-${f.k}-${i}" data-k="${f.k}" data-i="${i}" value="${esc(x)}" placeholder="${esc(phOf(f,i))}" aria-label="${esc(f.label)} ${i+1}">${rk?`<button type="button" class="icon" data-act="up" data-k="${f.k}" data-i="${i}" aria-label="上へ"${i===0?' disabled':''}>↑</button><button type="button" class="icon" data-act="down" data-k="${f.k}" data-i="${i}" aria-label="下へ"${i===v.length-1?' disabled':''}>↓</button>`:''}<button type="button" class="icon" data-act="del" data-k="${f.k}" data-i="${i}" aria-label="削除">×</button></div>`).join('');
   return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}<div class="rows">${rows}</div><button type="button" class="add" data-act="add" data-k="${f.k}">＋ 行を追加</button>${f.viz?`<div class="loopviz" id="loopviz"></div>`:''}</div>`;}
  if(f.type==='cards'){
   const cards=v.map((o,i)=>`<div class="card"><div class="card-head"><span>${f.numbered?'PILLAR '+(i+1):'#'+(i+1)}</span><button type="button" class="icon" data-act="del" data-k="${f.k}" data-i="${i}" aria-label="削除">×</button></div>${f.sub.map(sf=>{const id=`f-${f.k}-${i}-${sf.k}`;const ctl=sf.area?`<textarea id="${id}" rows="2" data-k="${f.k}" data-i="${i}" data-sub="${sf.k}" placeholder="${esc(sf.ph)}">${esc(o[sf.k])}</textarea>`:`<input type="text" id="${id}" data-k="${f.k}" data-i="${i}" data-sub="${sf.k}" value="${esc(o[sf.k])}" placeholder="${esc(sf.ph)}">`;return `<label class="${sf.full?'full':''}" for="${id}">${esc(sf.l)}${ctl}</label>`;}).join('')}</div>`).join('');
   return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}<div class="cards">${cards}</div><button type="button" class="add" data-act="add" data-k="${f.k}">＋ 追加</button></div>`;}
+ if(f.type==='mood')return moodFieldH(f,s);
+ if(f.type==='playtests')return ptFieldH(f,s);
  return '';}
+
+/* mood board */
+function safeUrl(u){u=t(u);if(!/^https?:\/\/\S+$/i.test(u))return '';try{new URL(u);return u;}catch(e){return '';}}
+function moodKind(u){if(/\.(png|jpe?g|gif|webp|avif|svg)(?:[?#]|$)/i.test(u))return 'image';if(/(?:youtube\.com|youtu\.be|soundcloud\.com|spotify\.com|bandcamp\.com|music\.apple\.com|nicovideo\.jp)/i.test(u))return 'music';return 'link';}
+function moodThumb(m){const src=m.kind==='local'?(/^data:image\/(png|jpe?g|gif|webp);base64,/.test(m.src)?m.src:''):(m.kind==='image'?safeUrl(m.url):'');
+ if(src)return `<img src="${esc(src)}" alt="${esc(t(m.title)||MOOD_L[m.kind])}" loading="lazy" referrerpolicy="no-referrer" data-fallback>`;
+ if(m.kind==='local')return '<span>（取り込んだ画像は共有されていません）</span>';
+ return `<span>${m.kind==='music'?'♪ ':'↗ '}${esc(MOOD_L[m.kind]||'リンク')}</span>`;}
+function moodFieldH(f,s){
+ const items=s.mood.map((m,i)=>{const u=safeUrl(m.url);return `<div class="mood"><div class="thumb">${moodThumb(m)}</div><div class="mbody"><div class="mhead"><span class="mk">${esc(MOOD_L[m.kind])}</span>${u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">開く ↗</a>`:''}<button type="button" class="icon" data-act="del" data-k="mood" data-i="${i}" aria-label="削除">×</button></div>
+  <input type="text" data-k="mood" data-i="${i}" data-sub="title" value="${esc(m.title)}" placeholder="名前（例：発光生物の写真）" aria-label="資料の名前">
+  <textarea rows="2" data-k="mood" data-i="${i}" data-sub="note" placeholder="何を参考にしたいか（例：青黒の中に点で光る色づかい）" aria-label="何を参考にしたいか">${esc(m.note)}</textarea></div></div>`;}).join('');
+ return `<div class="field"><span class="label">${f.label}</span>${hintH(f)}
+  <div class="mood-add"><input type="url" id="moodUrl" placeholder="画像・音楽・動画・ページのURL（https://…）" aria-label="参考資料のURL"><button type="button" class="btn" data-act="moodurl">URLを追加</button><button type="button" class="btn" data-act="moodfile">画像を取り込む</button><input type="file" id="moodFile" accept="image/*" multiple hidden></div>
+  <p class="hint">取り込んだ画像は縮小して、このブラウザーの中にだけ保存されます（共有リンクには含まれません）。</p>
+  ${items?`<div class="mood-grid">${items}</div>`:''}</div>`;}
+function shrinkImage(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=rej;fr.onload=()=>{const im=new Image();im.onerror=rej;
+ im.onload=()=>{const M=480,r=Math.min(1,M/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*r));c.height=Math.max(1,Math.round(im.height*r));
+  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);
+  let q=.72,u=c.toDataURL('image/jpeg',q);while(u.length>60000&&q>.3){q-=.12;u=c.toDataURL('image/jpeg',q);}res(u);};im.src=fr.result;};fr.readAsDataURL(file);});}
+
+/* playtests */
+function ptFieldH(f,s){const N=s.playtests.length;
+ const cards=s.playtests.map((p,i)=>{const id=k=>`pt-${i}-${k}`;
+  const ta=(k,l,ph,r=2)=>`<label class="full" for="${id(k)}">${l}<textarea id="${id(k)}" rows="${r}" data-k="playtests" data-i="${i}" data-sub="${k}" placeholder="${esc(ph)}">${esc(p[k])}</textarea></label>`;
+  return `<div class="card pt"><div class="card-head"><span>LOG ${String(N-i).padStart(2,'0')}</span><button type="button" class="icon" data-act="del" data-k="playtests" data-i="${i}" aria-label="この記録を削除">×</button></div>
+  <label for="${id('date')}">日付<input type="date" id="${id('date')}" data-k="playtests" data-i="${i}" data-sub="date" value="${esc(p.date)}"></label>
+  <label for="${id('build')}">試作品<input type="text" id="${id('build')}" data-k="playtests" data-i="${i}" data-sub="build" value="${esc(p.build)}" placeholder="例：灯り表現だけの試作 v0.1"></label>
+  ${ta('question','確かめたい問い','例：灯りの強弱だけで緊張する判断になるか')}
+  <div class="full"><span class="sublabel">判定</span><div class="chips" role="group" aria-label="判定">${PT_STATUS.map(o=>`<button type="button" class="chip" data-act="ptst" data-i="${i}" data-v="${o.k}" aria-pressed="${p.status===o.k}">${o.l}</button>`).join('')}</div></div>
+  ${ta('result','試作品での結果（何が起きたか）','例：ずっと明るくしたまま進む人が多かった',3)}
+  ${ta('reaction','プレイヤーの反応（何をして、何と言ったか）','例：「暗くする理由がない」と言っていた',3)}
+  ${ta('change','次に変えること（1行に1つ）','例：暗くしたときだけ見える手がかりを置く',2)}
+  <div class="full pt-send"><span class="sublabel">「次に変えること」を企画に送る</span><button type="button" class="btn sm" data-act="send" data-i="${i}" data-to="next">→ 次に作るもの</button><button type="button" class="btn sm" data-act="send" data-i="${i}" data-to="open">→ 未決定事項</button></div></div>`;}).join('');
+ return `<div class="field"><span class="label">${f.label}</span><p class="hint">新しい記録が上に追加されます。「確かめたい問い」には、いまの「プロトタイプで確かめたいこと」が入ります。</p>
+  <button type="button" class="btn primary" data-act="addtest" style="align-self:flex-start">＋ 検証を記録する</button>
+  ${N?`<div class="cards">${cards}</div>`:'<p class="hint">まだ記録はありません。試作品を誰かに遊んでもらったら、ここに書きましょう。</p>'}</div>`;}
+
+/* genre questions */
+function guessGenre(txt){for(const [k,re] of GENRE_KW)if(re.test(txt||''))return k;return '';}
+const genreL=k=>(GENRES.find(x=>x.k===k)||{}).l||'';
+function updateGenreSug(){const el=$('#gsug');if(!el)return;const s=S();const g=guessGenre(s.genre);
+ if(!s.genreTpl&&g){el.hidden=false;el.innerHTML=`ジャンル欄から「${esc(genreL(g))}」と推定しました。<button type="button" class="linkbtn" data-act="usegenre" data-v="${g}">この型の問いを使う</button>`;}else el.hidden=true;}
+function gqH(secId,s){const g=s.genreTpl;if(!GQ[g])return '';const qs=GQ[g].filter(q=>q.st===secId);if(!qs.length)return '';
+ return `<div class="gq"><p class="gq-name">${esc(genreL(g))}ならではの問い</p>${qs.map(q=>`<div class="field"><label class="label" for="gq-${q.id}">${esc(q.q)}</label><textarea id="gq-${q.id}" rows="2" data-gq="${q.id}" placeholder="${esc(q.ph||'')}">${esc(s.gq[q.id])}</textarea></div>`).join('')}</div>`;}
 
 function renderLoopViz(){const el=$('#loopviz');if(!el)return;const st=S().loop.filter(x=>t(x));
  el.innerHTML=st.length?st.map(x=>`<span class="st">${esc(x)}</span>`).join('<span class="ar">→</span>')+'<span class="ar">→</span><span class="back">↺ 最初へ戻る</span>':'<span class="empty">ステップを書くと、ここにループが表示されます。</span>';}
@@ -369,43 +631,94 @@ function renderLoopViz(){const el=$('#loopviz');if(!el)return;const st=S().loop.
 function renderForm(){const sec=SECTIONS[step],s=S();
  let h=`<header class="sec-head"><p class="eyebrow">STEP ${String(step+1).padStart(2,'0')} / ${String(SECTIONS.length).padStart(2,'0')}</p><h2>${sec.title}</h2><p class="lead">${sec.lead}</p></header>`;
  if(sec.idea)h+=`<aside class="idea"><p class="idea-name">${esc(sec.idea.name)}</p><p>${esc(sec.idea.text)}</p>${sec.idea.qs?'<ul>'+sec.idea.qs.map(q=>`<li>${esc(q)}</li>`).join('')+'</ul>':''}</aside>`;
- if(sec.id==='finish')h+=finishH();else h+=`<div class="fields">${sec.fields.map(f=>fieldH(f,s)).join('')}</div>`;
+ if(sec.id==='finish')h+=finishH();else h+=`<div class="fields">${sec.fields.map(f=>fieldH(f,s)).join('')}</div>${gqH(sec.id,s)}`;
  h+=`<div class="stepnav"><button type="button" class="btn" data-act="prev"${step===0?' hidden':''}>← ${step>0?SECTIONS[step-1].title:''}</button><span></span>${step<SECTIONS.length-1?`<button type="button" class="btn primary" data-act="next">${SECTIONS[step+1].title} →</button>`:''}</div>`;
- $('#form').innerHTML=h;renderLoopViz();if(sec.id==='finish')updateOut();}
+ $('#form').innerHTML=h;renderLoopViz();updateGenreSug();if(sec.id==='finish')updateOut();}
 
-/* ---------- checks ---------- */
-function checks(s){const o=[];const L=(lv,tx,st)=>o.push({lv,tx,st});
+/* ---------- checks (記入漏れ) ---------- */
+function checks(s){const o=[];const L=(lv,tx,st)=>o.push({lv,tx,st:stepOf(st)});
  const c=t(s.concept);
- if(!c)L('warn','一言コンセプトがまだ空です。プレイヤーが何をするゲームかを1〜2文で書きましょう。',1);
- else if(c.length>90)L('tip',`一言コンセプトが${c.length}文字あります。60文字前後まで削ると、人に伝わりやすくなります。`,1);
- if(!t(s.hook))L('warn','フックが空です。似た作品と並んだとき、このゲームを選ぶ理由を一つ書きましょう。',1);
- if(!t(s.audience))L('tip','誰に遊んでほしいかが空です。難易度や1回の長さを決める手がかりになります。',0);
- if(!nn(s.feelings))L('warn','プレイヤーに感じてほしいことが空です。企画の出発点になる項目です。',2);
- if(!s.funs.length)L('tip','中心になる楽しさの種類が未選択です。',2);
- else if(s.funs.length>3)L('tip',`楽しさの種類が${s.funs.length}つ選ばれています。主役を3つまでに絞ると判断がぶれにくくなります。`,2);
- if(!t(s.moment))L('tip','忘れられない瞬間が空です。遊んだ人が誰かに話したくなる場面を1つ。',2);
+ if(!c)L('warn','一言コンセプトがまだ空です。プレイヤーが何をするゲームかを1〜2文で書きましょう。','concept');
+ else if(c.length>90)L('tip',`一言コンセプトが${c.length}文字あります。60文字前後まで削ると、人に伝わりやすくなります。`,'concept');
+ if(!t(s.hook))L('warn','フックが空です。似た作品と並んだとき、このゲームを選ぶ理由を一つ書きましょう。','concept');
+ if(!t(s.audience))L('tip','誰に遊んでほしいかが空です。難易度や1回の長さを決める手がかりになります。','basics');
+ if(!nn(s.feelings))L('warn','プレイヤーに感じてほしいことが空です。企画の出発点になる項目です。','experience');
+ if(!s.funs.length)L('tip','中心になる楽しさの種類が未選択です。','experience');
+ else if(s.funs.length>3)L('tip',`楽しさの種類が${s.funs.length}つ選ばれています。主役を3つまでに絞ると判断がぶれにくくなります。`,'experience');
+ if(!t(s.moment))L('tip','忘れられない瞬間が空です。遊んだ人が誰かに話したくなる場面を1つ。','experience');
  const pn=s.pillars.filter(p=>t(p.name)).length;
- if(pn<3)L('warn',`デザインピラーが${pn}つです。3〜4つあると、アイデアを選ぶ基準として働きます。`,3);
- else if(pn>5)L('tip',`デザインピラーが${pn}つあります。多すぎると基準として使いにくくなります。`,3);
+ if(pn<3)L('warn',`デザインピラーが${pn}つです。3〜4つあると、アイデアを選ぶ基準として働きます。`,'pillars');
+ else if(pn>5)L('tip',`デザインピラーが${pn}つあります。多すぎると基準として使いにくくなります。`,'pillars');
  const pNo=s.pillars.filter(p=>t(p.name)&&!t(p.no)).length;
- if(pNo)L('tip',`${pNo}つのピラーに「反するアイデア」がありません。何を断るかが書いてあると、判定に使えます。`,3);
+ if(pNo)L('tip',`${pNo}つのピラーに「反するアイデア」がありません。何を断るかが書いてあると、判定に使えます。`,'pillars');
  const ln=nn(s.loop);
- if(ln<3)L('warn',`コアループが${ln}ステップです。3〜5ステップで、最後が最初につながる形にしましょう。`,4);
- else if(ln>7)L('tip',`コアループが${ln}ステップあります。核になる部分だけに絞れないか見直しましょう。`,4);
- if(!nn(s.verbs))L('tip','プレイヤーができること（動詞）が空です。',4);
- if(!t(s.winLose))L('tip','成功・失敗の条件が空です。',5);
- if(!nn(s.notNow))L('warn','「今回は入れないもの」が空です。1つ決めておくと、作業が膨らむのを防げます。',7);
- if(!t(s.question))L('warn','プロトタイプで確かめたいことが空です。最初に作るものの目的になります。',8);
- if(!nn(s.next))L('tip','次に作るものが空です。',8);
+ if(ln<3)L('warn',`コアループが${ln}ステップです。3〜5ステップで、最後が最初につながる形にしましょう。`,'loop');
+ else if(ln>7)L('tip',`コアループが${ln}ステップあります。核になる部分だけに絞れないか見直しましょう。`,'loop');
+ if(!nn(s.verbs))L('tip','プレイヤーができること（動詞）が空です。','loop');
+ if(!t(s.winLose))L('tip','成功・失敗の条件が空です。','systems');
+ if(!nn(s.notNow))L('warn','「今回は入れないもの」が空です。1つ決めておくと、作業が膨らむのを防げます。','scope');
+ if(!t(s.question))L('warn','プロトタイプで確かめたいことが空です。最初に作るものの目的になります。','next');
+ if(!nn(s.next))L('tip','次に作るものが空です。','next');
  return o;}
 
+/* ---------- review (矛盾・スコープの見直し：ルール式) ---------- */
+const Z2H=x=>String(x??'').replace(/[０-９．]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));
+function durMin(str){const x=Z2H(str);let max=0,m;const re=/(\d+(?:\.\d+)?)\s*(?:[〜~～\-－]\s*(\d+(?:\.\d+)?))?\s*(時間半|時間|hours?|hr|h|分|min)/gi;
+ while((m=re.exec(x))){const n=parseFloat(m[2]||m[1]);const u=m[3].toLowerCase();const v=u==='時間半'?n*60+30:(u==='分'||u==='min')?n:n*60;if(v>max)max=v;}
+ return max||null;}
+const TOTAL_RE=/クリア|全体|ボリューム|エンディング|合計|総|トータル|全部|やり込み|全\d/;
+function playParts(str){let ses=null,tot=null;
+ for(const p of Z2H(str).split(/[、,，\/／;；\n]/)){const d=durMin(p);if(d==null)continue;if(TOTAL_RE.test(p)){if(tot==null)tot=d;}else if(ses==null)ses=d;}
+ return {ses,tot};}
+function teamN(str){const x=Z2H(str);if(!t(x))return null;const m=x.match(/(\d+)\s*(?:人|名)/);if(m)return +m[1];
+ if(/ソロ|一人|ひとり|個人/.test(x))return 1;if(/二人|ふたり/.test(x))return 2;const n=x.match(/\d+/);return n?+n[0]:null;}
+function months(str){const x=Z2H(str);if(!t(x))return null;if(/半年/.test(x))return 6;let max=0,m;
+ const re=/(\d+(?:\.\d+)?)\s*(?:[〜~～\-－]\s*(\d+(?:\.\d+)?))?\s*(年|か月|ヶ月|ケ月|カ月|ヵ月|箇月|月|週間|週|日)/g;
+ while((m=re.exec(x))){const n=parseFloat(m[2]||m[1]);const u=m[3];const v=u==='年'?n*12:/週/.test(u)?n/4.3:u==='日'?n/30:n;if(v>max)max=v;}
+ return max||null;}
+const fmtMo=mo=>mo<1?`${Math.max(1,Math.round(mo*4.3))}週間`:`${Math.round(mo*10)/10}か月`;
+const STOP=new Set(['体験','連続','要素','プレイ','ゲーム','プレイヤー','ゲー','感じ','状態','場合','自分']);
+function tokens(str,min=1){return (String(str||'').match(/[一-鿿々]+|[゠-ヿ]{2,}/g)||[]).filter(w=>w.length>=min&&!STOP.has(w));}
+function hay(s){return [s.loop.join(' '),s.loopSession,s.verbs.join(' '),s.systems.map(x=>x.name+' '+x.content).join(' '),s.winLose].join(' ');}
+const sysN=s=>s.systems.filter(x=>t(x.content)).length;
+const SHORT_RE=/短時間|短い時間|短く|サクッと|さくっと|スキマ|隙間|すき間|通勤|手軽|ちょっとした時間/;
+const RULES=[
+ {id:'short-long',st:'basics',f:s=>{const {ses}=playParts(s.playtime);if(ses>30&&SHORT_RE.test([s.audience,s.concept,s.fantasy,s.rules.join(' ')].join(' ')))
+   return `短い時間で遊べることを狙っていますが、1回のプレイが約${ses}分あります。途中で区切れる場所を作るか、1回を短くできますか？`;}},
+ {id:'rule-limit',st:'scope',f:s=>{const {ses}=playParts(s.playtime);if(!ses)return;
+   for(const r of s.rules){const m=Z2H(r).match(/(\d+)\s*分(?:を|は)?(?:超え|越え|以内|まで|未満)/);if(m&&ses>+m[1])return `方針「${t(r)}」に対して、1回のプレイ時間が約${ses}分になっています。どちらに合わせますか？`;}}},
+ {id:'scope-load',st:'systems',f:s=>{const n=teamN(s.team),mo=months(s.period),sy=sysN(s),vb=nn(s.verbs),load=sy+Math.ceil(vb/2);
+   if(n&&mo){if(load>=4&&load>n*mo*1.5)return `制作${n}人・約${fmtMo(mo)}に対して、主要システムが${sy}つ${vb?`、動詞が${vb}つ`:''}あります。最初の版で作り切れますか？後回しにできるものはどれですか？`;}
+   else if(n===1&&sy>=5)return `1人で制作する予定に対して、主要システムが${sy}つあります。最初の版に本当に必要なのはどれですか？`;}},
+ {id:'volume',st:'basics',f:s=>{const n=teamN(s.team),mo=months(s.period),{tot}=playParts(s.playtime);
+   if(tot&&tot>=20*60&&n&&n<=2&&(!mo||mo<12))return `全体のボリュームが約${Math.round(tot/60)}時間ありますが、制作は${n}人${mo?'・約'+fmtMo(mo):''}です。その長さを支える中身（ステージ・敵・シナリオ）の量を見積もれていますか？`;}},
+ {id:'story-cut',st:'scope',f:s=>{if(!s.funs.includes('narrative'))return;const x=s.notNow.find(v=>/ストーリー|物語|シナリオ|会話|テキスト/.test(v));
+   if(x)return `「物語」を中心の楽しさに選んでいますが、「今回は入れないもの」に「${t(x)}」があります。物語の楽しさを何で届けますか？`;}},
+ {id:'multi-cut',st:'scope',f:s=>{if(!s.funs.includes('fellowship'))return;const x=s.notNow.find(v=>/マルチ|オンライン|協力|対戦|通信|多人数/.test(v));
+   if(x)return `「仲間」を中心の楽しさに選んでいますが、「今回は入れないもの」に「${t(x)}」があります。仲間の楽しさをどこで作りますか？`;}},
+ {id:'hook-fun',st:'concept',f:s=>{const k={'物語':'narrative','見た目・音':'sensation'}[s.hookType];
+   if(k&&!s.funs.includes(k))return `フックの種類は「${s.hookType}」ですが、中心になる楽しさに「${FUNS.find(f=>f.k===k).l}」が入っていません。フックと楽しさは同じ方向を向いていますか？`;}},
+ {id:'device',st:'loop',f:s=>{if(!/スマホ|スマートフォン|iOS|iPhone|Android|モバイル/i.test(s.platform))return;const m=String(s.control).match(/スティック|トリガー|キーボード|マウス|十字キー/);
+   if(m)return `プラットフォームにスマホが含まれていますが、操作に「${m[0]}」があります。タッチ操作ではどう遊びますか？`;}},
+ {id:'anti-in',st:'experience',f:s=>{const h=hay(s);for(const a of s.anti)for(const w of tokens(a,2))if(h.includes(w))
+   return `「作りたくない体験」に「${t(a)}」がありますが、ループやシステムにも「${w}」が出てきます。避けたい体験を自分で入れていませんか？`;}},
+ {id:'pillar-loop',st:'pillars',f:s=>{const h=hay(s);if(!t(h))return;
+   const miss=s.pillars.filter(p=>{const tk=tokens(p.name);return tk.length&&!tk.some(w=>h.includes(w));}).map(p=>`「${t(p.name)}」`);
+   if(miss.length)return `ピラー${miss.join('')}の言葉が、コアループ・システム・動詞のどこにも出てきません。その柱はプレイのどこで効きますか？`;}},
+ {id:'idea-pile',st:'scope',f:s=>{if(nn(s.ideas)>=nn(s.notNow)+3&&sysN(s)>=4)return `アイデア置き場が${nn(s.ideas)}件あり、「今回は入れないもの」より大幅に多くなっています。置き場から本編に入り込んでいるものはありませんか？`;}},
+ {id:'untested',st:'tests',f:s=>{if(t(s.question)&&nn(s.next)&&!s.playtests.length)return 'プロトタイプで確かめたいことは決まっていますが、検証日誌にまだ記録がありません。試作を遊んでもらったら、結果を残しましょう。';}},
+ {id:'test-no',st:'tests',f:s=>{const p=s.playtests[0];if(p&&p.status==='no')return `最新の検証（${t(p.date)||'日付なし'}）では問いを確認できませんでした。試作品を変えますか？それとも、コンセプトやピラーを見直しますか？`;}},
+ {id:'test-nochange',st:'tests',f:s=>{const p=s.playtests[0];if(p&&(t(p.result)||t(p.reaction))&&!t(p.change))return '最新の検証に「次に変えること」がありません。結果から1つ選んで、次の試作で変えましょう。';}},
+ {id:'mood-note',st:'world',f:s=>{const n=s.mood.filter(m=>!t(m.note)).length;if(n)return `ムードボードに「何を参考にしたいか」が書かれていない資料が${n}件あります。意図を添えると、見た目だけでなく狙いが伝わります。`;}}];
+function review(s,all){const o=[];for(const r of RULES){if(!all&&s.dismissed.includes(r.id))continue;let tx;try{tx=r.f(s);}catch(e){}if(tx)o.push({id:r.id,tx,st:stepOf(r.st)});}return o;}
+
 /* ---------- markdown ---------- */
-function toMD(s){const out=[];const P=x=>out.push(x);const B=()=>out.push('');
+function toMD(s,meta){const out=[];const P=x=>out.push(x);const B=()=>out.push('');meta=meta||{};
  const list=(a,pre='- ')=>a.filter(x=>t(x)).forEach((x,i)=>P((pre==='1'?`${i+1}. `:pre)+t(x)));
  const kv=(k,v)=>{if(t(v))P(`- ${k}：${t(v).replace(/\n+/g,' ')}`);};
  const para=(label,v)=>{if(t(v)){P(`**${label}**`);t(v).split('\n').forEach(l=>P(l));B();}};
- P(`# ${t(s.title)||'無題の企画'}`);if(t(s.concept))P('> '+t(s.concept).replace(/\n+/g,' '));B();
- if(t(s.genre)||t(s.platform)||t(s.playtime)||t(s.audience)){P('## 基本情報');kv('ジャンル',s.genre);kv('プラットフォーム',s.platform);kv('プレイ時間',s.playtime);kv('ターゲット',s.audience);B();}
+ P(`# ${t(s.title)||'無題の企画'}`);if(t(s.concept))P('> '+t(s.concept).replace(/\n+/g,' '));if(t(meta.variant))P(`**版**：${t(meta.variant)}`);B();
+ if(t(s.genre)||t(s.platform)||t(s.playtime)||t(s.audience)||t(s.team)||t(s.period)){P('## 基本情報');kv('ジャンル',s.genre);kv('プラットフォーム',s.platform);kv('プレイ時間',s.playtime);kv('ターゲット',s.audience);kv('制作人数',s.team);kv('制作期間',s.period);B();}
  const comps=s.comps.filter(c=>t(c.title));
  if(t(s.hook)||comps.length){P('## フック');if(t(s.hook)){P((t(s.hookType)?`**${t(s.hookType)}**：`:'')+t(s.hook).replace(/\n+/g,' '));B();}
   if(comps.length){P('**似ている作品との違い**');comps.forEach(c=>P(`- ${t(c.title)}${t(c.diff)?'：'+t(c.diff):''}`));B();}}
@@ -426,16 +739,29 @@ function toMD(s){const out=[];const P=x=>out.push(x);const B=()=>out.push('');
   para('1回のプレイの流れ',s.loopSession);para('長く遊ぶ理由',s.loopLong);
   if(nn(s.verbs)){P(`**プレイヤーができること**：${s.verbs.filter(x=>t(x)).map(t).join('・')}`);B();}
   if(t(s.camera)||t(s.character)||t(s.control)){P('**3C**');kv('カメラ',s.camera);kv('キャラクター',s.character);kv('操作',s.control);B();}}
- const sys=s.systems.filter(x=>t(x.content)||t(x.name)&&t(x.content));
+ const sys=s.systems.filter(x=>t(x.content));
  if(sys.length||t(s.winLose)){P('## 主要システム');sys.forEach(x=>{P(`### ${t(x.name)||'システム'}`);t(x.content).split('\n').forEach(l=>P(l));B();});para('成功・失敗の条件',s.winLose);}
  const refs=s.refs.filter(r=>t(r.title));
  if(t(s.setting)||t(s.theme)||t(s.visual)||t(s.audio)||refs.length){P('## 世界観・雰囲気');kv('舞台',s.setting);kv('テーマ',s.theme);kv('ビジュアル',s.visual);kv('音',s.audio);B();
   if(refs.length){P('**参考作品・資料**');refs.forEach(r=>P(`- ${t(r.title)}${t(r.borrow)?'：'+t(r.borrow):''}`));B();}}
+ const gqs=(GQ[s.genreTpl]||[]).filter(q=>t(s.gq[q.id]));
+ if(gqs.length){P(`## ${genreL(s.genreTpl)}ならではの問い`);gqs.forEach(q=>{P(`**${q.q}**`);t(s.gq[q.id]).split('\n').forEach(l=>P(l));B();});}
  if(nn(s.rules)||nn(s.notNow)||nn(s.ideas)||nn(s.open)){P('## 方針とスコープ');
   [['絶対に守る方針',s.rules],['今回は入れないもの',s.notNow],['アイデア置き場',s.ideas],['未決定事項',s.open]].forEach(([l,a])=>{if(nn(a)){P(`**${l}**`);list(a);B();}});}
  if(t(s.question)||nn(s.next)){P('## 次に作るもの');para('プロトタイプで確かめたいこと',s.question);if(nn(s.next)){list(s.next);B();}}
+ const vd=(VERDICTS.find(x=>x.k===meta.verdict)||{}).l;
+ if(vd||t(meta.reason)){P('## この案の判断');if(vd)P(`**判定**：${vd}`);if(t(meta.reason)){if(vd)B();t(meta.reason).split('\n').forEach(l=>P(l));}B();}
  while(out.length&&out[out.length-1]==='')out.pop();
  return out.join('\n')+'\n';}
+function testsMD(s){const ps=s.playtests.filter(p=>t(p.result)||t(p.reaction)||t(p.change)||t(p.status));if(!ps.length)return '';
+ const o=['## 付録：検証日誌',''];
+ ps.forEach(p=>{o.push(`### ${t(p.date)||'日付なし'}${t(p.build)?'　'+t(p.build):''}`);const st=(PT_STATUS.find(x=>x.k===p.status)||{}).l;
+  [['問い',p.question],['判定',st],['結果',p.result],['反応',p.reaction],['次に変えること',p.change]].forEach(([l,v])=>{if(t(v))o.push(`- ${l}：${t(v).replace(/\n+/g,' ／ ')}`);});o.push('');});
+ return o.join('\n');}
+function moodMD(s){if(!s.mood.length)return '';const o=['## 付録：ムードボード',''];
+ s.mood.forEach(m=>{const u=safeUrl(m.url);const nm=(t(m.title)||(u?u:MOOD_L[m.kind])).replace(/[[\]]/g,'');o.push(`- ${u?`[${nm}](${u})`:nm}（${MOOD_L[m.kind]}）${t(m.note)?'：'+t(m.note).replace(/\n+/g,' '):''}`);});
+ o.push('');return o.join('\n');}
+function fullMD(s,meta,ex){let md=toMD(s,meta);const ap=[ex.mood?moodMD(s):'',ex.tests?testsMD(s):''].filter(Boolean);if(ap.length)md+='\n'+ap.join('\n');return md.replace(/\n+$/,'')+'\n';}
 
 function inl(x){return esc(x).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');}
 function mdHTML(md){const L=md.split('\n');let h='',lt=null,para=[];
@@ -449,77 +775,162 @@ function mdHTML(md){const L=md.split('\n');let h='',lt=null,para=[];
   if(m=ln.match(/^\d+\. (.*)/)){fl();if(lt!=='ol'){cl();h+='<ol>';lt='ol';}h+=`<li>${inl(m[1])}</li>`;continue;}
   cl();para.push(inl(ln));}
  fl();cl();return h;}
+function moodGridH(ms){return `<div class="mood-grid sm">${ms.map(m=>{const u=safeUrl(m.url);const nm=t(m.title)||MOOD_L[m.kind];
+ return `<figure class="mood"><div class="thumb">${moodThumb(m)}</div><figcaption><strong>${u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(nm)}</a>`:esc(nm)}</strong>${t(m.note)?`<span>${esc(t(m.note))}</span>`:''}</figcaption></figure>`;}).join('')}</div>`;}
+/* 1枚の企画書（プレビュー・印刷・閲覧モードで共通） */
+function sheetHTML(s,meta,ex){const md=toMD(s,meta);const L=md.split('\n');let h;
+ if(L.length<3)h=`<h1>${esc(t(s.title)||'無題の企画')}</h1><p class="empty-doc">左の質問に答えると、ここに企画書が1枚にまとまっていきます。</p>`;
+ else{const i=L.findIndex(l=>/^## /.test(l));h=i<0?mdHTML(md):`<header class="sh-head">${mdHTML(L.slice(0,i).join('\n'))}</header><div class="sh-body">${mdHTML(L.slice(i).join('\n'))}</div>`;}
+ let ap='';if(ex.mood&&s.mood.length)ap+=`<h2>付録：ムードボード</h2>${moodGridH(s.mood)}`;const tm=ex.tests?testsMD(s):'';if(tm)ap+=mdHTML(tm);
+ if(ap)h+=`<section class="appendix">${ap}</section>`;return h;}
 
-let pvT;function renderPreview(){clearTimeout(pvT);pvT=setTimeout(()=>{const md=toMD(S());
- $('#sheet').innerHTML=md.split('\n').length<3?`<h1>${esc(t(S().title)||'無題の企画')}</h1><p class="empty-doc">左の質問に答えると、ここに企画書が1枚にまとまっていきます。</p>`:mdHTML(md);},120);}
+function renderPreviewNow(){clearTimeout(pvT);$('#sheet').innerHTML=sheetHTML(S(),doc(),store.exp);}
+let pvT;function renderPreview(){clearTimeout(pvT);pvT=setTimeout(renderPreviewNow,120);}
+function syncExopt(){document.querySelectorAll('.exopt').forEach(x=>x.checked=!!store.exp[x.dataset.ex]);}
+function doPrint(){if(!document.body.classList.contains('viewing'))renderPreviewNow();setTimeout(()=>window.print(),60);}
 
 /* ---------- finish ---------- */
 let outMode='md';
-function consultText(){return `以下は私が考えているゲームの企画メモです。読んで、次の観点でレビューしてください。
+function consultText(){const rv=review(S());return `以下は私が考えているゲームの企画メモです。読んで、次の観点でレビューしてください。
 1. 一言コンセプト・フック・デザインピラー・コアループが、同じ体験を目指しているか（ずれている所の指摘）
 2. 「作りたい体験」を実現するうえで足りないルールや仕組み
 3. 最初のプロトタイプで確かめるべきことが適切か、もっと小さくできるか
-4. 未決定事項について、判断材料になる問い
+4. 未決定事項について、判断材料になる問い${rv.length?'\n5. 末尾の「ツールが出した見直したい点」それぞれについて、どう考えればよいか':''}
 
 ---
-${toMD(S())}`;}
-function outText(){if(outMode==='md')return toMD(S());if(outMode==='ask')return consultText();return JSON.stringify(S(),null,2);}
-function finishH(){const c=checks(S());
+${fullMD(S(),doc(),store.exp)}${rv.length?`
+---
+ツールが出した見直したい点：
+${rv.map(x=>'- '+x.tx).join('\n')}
+`:''}`;}
+function outText(){if(outMode==='md')return fullMD(S(),doc(),store.exp);if(outMode==='ask')return consultText();return JSON.stringify(S(),null,2);}
+function finishH(){const s=S(),c=checks(s),rv=review(s),nd=s.dismissed.length;
  const items=c.length?c.map(x=>`<li><span class="tag ${x.lv}">${x.lv==='warn'?'要記入':'ヒント'}</span><span>${esc(x.tx)}</span><button type="button" class="jump" data-step="${x.st}">${SECTIONS[x.st].title}へ</button></li>`).join(''):`<li><span class="tag ok">OK</span><span>大きな抜けはありません。プレビューを読み通して、ピラーとコアループが同じ体験を向いているか確かめましょう。</span></li>`;
+ const rvItems=rv.length?rv.map(x=>`<li><span class="tag q">見直し</span><span>${esc(x.tx)}</span><span class="ops"><button type="button" class="jump" data-step="${x.st}">${SECTIONS[x.st].title}へ</button><button type="button" class="jump mute" data-act="dismiss" data-v="${x.id}">非表示</button></span></li>`).join(''):`<li><span class="tag ok">OK</span><span>いまのルールで見つかる食い違いはありません。</span></li>`;
+ const file=location.protocol==='file:';
  return `<div class="fields">
  <div class="field"><span class="label">チェック</span><p class="hint">企画の芯（コンセプト・ピラー・ループ・やらないこと）を中心に、抜けを確認します。</p><ul class="checks">${items}</ul></div>
+ <div class="field"><span class="label">見直したい点</span><p class="hint">企画の中の食い違いや、制作規模に対して大きすぎる所を、問いの形で出します。決まったルールで調べる簡易チェックなので、当てはまらないものは非表示にしてください。</p><ul class="checks">${rvItems}</ul>${nd?`<button type="button" class="linkbtn" data-act="undismiss">非表示にした指摘（${nd}件）を戻す</button>`:''}</div>
  <div class="field"><span class="label" id="outLbl">書き出し</span>
   <div class="seg" role="group" aria-labelledby="outLbl">
    <button type="button" data-act="mode" data-v="md" aria-pressed="${outMode==='md'}">Markdown</button>
    <button type="button" data-act="mode" data-v="ask" aria-pressed="${outMode==='ask'}">AIへの相談文つき</button>
    <button type="button" data-act="mode" data-v="json" aria-pressed="${outMode==='json'}">バックアップ（JSON）</button></div>
+  <fieldset class="checkrow"><legend>付録として含める（Markdown・相談文・印刷）</legend><label><input type="checkbox" class="exopt" data-ex="mood"> ムードボード</label><label><input type="checkbox" class="exopt" data-ex="tests"> 検証日誌</label></fieldset>
   <p class="hint" id="outHint"></p>
   <textarea id="out" class="out" readonly aria-label="書き出し内容"></textarea>
-  <div class="exp-actions"><button type="button" class="btn primary" data-act="copy">コピー</button></div></div>
+  <div class="exp-actions"><button type="button" class="btn primary" data-act="copy">コピー</button><button type="button" class="btn" data-print>印刷・PDF保存</button></div>
+  <p class="hint">印刷画面で「送信先：PDFに保存」を選ぶとPDFになります。本文はA4・1ページ、付録は2ページ目からです。1ページに収まらないときは、印刷画面の「倍率」を90%前後に下げてください。</p></div>
+ <div class="field"><span class="label">共有リンク（読み取り専用）</span>
+  <p class="hint">企画の内容をURLの中に入れたリンクを作ります。開いた人は企画書を読めますが、編集はできません。内容はサーバーに送られません（URLの「#」より後ろはサーバーに届かないため）。</p>
+  <div class="notice warn"><strong>共有する前に</strong><ul><li>リンクを知っている人は、誰でも内容を読めます。一度渡したリンクは取り消せません。</li><li>リンクはチャット・メール・ブラウザーの履歴にそのまま残ります。未公開の企画にはパスワードを付け、パスワードはリンクとは別の手段で伝えてください。</li><li>リンクを作った後に企画を書き換えても、リンクの中身は変わりません。</li></ul></div>
+  <fieldset class="checkrow"><legend>含めるもの</legend><label><input type="checkbox" id="shScope" checked> アイデア置き場・未決定事項</label><label><input type="checkbox" id="shMood" checked> ムードボード（取り込んだ画像は除く）</label><label><input type="checkbox" id="shTests"> 検証日誌</label></fieldset>
+  <label class="label sm" for="shPass">パスワード（任意）</label><input type="password" id="shPass" autocomplete="new-password" placeholder="付けない場合は空のまま">
+  <div class="exp-actions"><button type="button" class="btn primary" data-act="mkshare">リンクを作る</button></div>
+  <div id="shOut" class="field" hidden><input type="text" id="shUrl" class="share-url" readonly aria-label="共有リンク"><div class="exp-actions"><button type="button" class="btn" data-act="copyshare">リンクをコピー</button><span id="shLen" class="hint" style="margin:0"></span></div><div id="shWarn"></div></div>
+  ${file?'<p class="notice warn">いまこのページは、パソコン上のファイル（file://）として開いています。このまま作ったリンクは、相手の環境では開けません。GitHub Pages などに置いたURLで開いてから作ってください。</p>':''}</div>
  <details class="imp"><summary>バックアップから読み込む</summary>
   <div class="field"><label class="label" for="impText">バックアップ（JSON）を貼り付け</label><p class="hint">新しい企画として追加されます。今の企画は上書きされません。</p>
   <textarea id="impText" rows="5" placeholder='{"title": "..."}'></textarea><div class="exp-actions"><button type="button" class="btn" data-act="import">読み込む</button></div></div></details>
  </div>`;}
-function updateOut(){const o=$('#out');if(!o)return;o.value=outText();
+function updateOut(){const o=$('#out');if(!o)return;o.value=outText();syncExopt();
  $('#outHint').textContent=outMode==='md'?'Notion、Obsidian、GitHubなどにそのまま貼り付けられます。':outMode==='ask'?'Claudeなどに貼り付けると、企画の一貫性をレビューしてもらえます。':'別の端末やブラウザに移すときに使います。下の「バックアップから読み込む」に貼り付けると復元できます。';}
+
+/* ---------- share link ---------- */
+const b64u={enc:u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');},
+ dec:str=>{str=str.replace(/-/g,'+').replace(/_/g,'/');while(str.length%4)str+='=';const b=atob(str);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}};
+async function pipe(u8,stream){return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(stream)).arrayBuffer());}
+async function pwKey(pw,salt){const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+ return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:200000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+async function encrypt(u8,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+ const c=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},await pwKey(pw,salt),u8));const o=new Uint8Array(28+c.length);o.set(salt);o.set(iv,16);o.set(c,28);return o;}
+async function decrypt(u8,pw){return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:u8.slice(16,28)},await pwKey(pw,u8.slice(0,16)),u8.slice(28)));}
+/* 形式：#v1.<flags>.<base64url>　flags: z=deflate圧縮 / r=非圧縮、末尾 e=パスワード暗号化 */
+async function makeShare(opt){const d=normalize(JSON.parse(JSON.stringify(S())));
+ if(!opt.scope){d.ideas=[];d.open=[];}
+ if(!opt.tests)d.playtests=[];
+ d.mood=opt.mood?d.mood.map(m=>m.kind==='local'?Object.assign({},m,{src:''}):m):[];
+ d.dismissed=[];
+ const m=doc();const payload={d,m:{variant:m.variant||'',verdict:m.verdict||'',reason:m.reason||''},x:{mood:d.mood.length>0,tests:d.playtests.length>0}};
+ let bytes=new TextEncoder().encode(JSON.stringify(payload)),fl='r';
+ if(window.CompressionStream){bytes=await pipe(bytes,new CompressionStream('deflate-raw'));fl='z';}
+ if(opt.pw){bytes=await encrypt(bytes,opt.pw);fl+='e';}
+ return {url:`${location.href.split('#')[0]}#v1.${fl}.${b64u.enc(bytes)}`,zipped:fl[0]==='z'};}
+async function readShare(hash,pw){const m=hash.match(/^#v1\.([a-z]+)\.([A-Za-z0-9_-]+)$/);if(!m)throw new Error('format');
+ let bytes=b64u.dec(m[2]);if(m[1].includes('e'))bytes=await decrypt(bytes,pw||'');
+ if(m[1][0]==='z'){if(!window.DecompressionStream)throw new Error('nozip');bytes=await pipe(bytes,new DecompressionStream('deflate-raw'));}
+ const p=JSON.parse(new TextDecoder().decode(bytes));if(!p||typeof p!=='object')throw new Error('payload');return p;}
+function shareWarn(len,zipped,pw){const w=[];
+ if(!zipped)w.push('このブラウザーは圧縮に対応していないため、リンクが長くなっています。');
+ if(len>8000)w.push('リンクがとても長くなっています（8,000文字超）。開けないアプリがあります。ムードボードや検証日誌を外すか、「バックアップ（JSON）」をファイルで渡すことをおすすめします。');
+ else if(len>2000)w.push('リンクが2,000文字を超えています。SNSや一部のチャットでは途中で切れることがあります。');
+ if(pw)w.push('パスワードは、リンクとは別の手段で伝えてください。');
+ return w.map(x=>`<p class="notice${/長く|切れる/.test(x)?' warn':''}">${esc(x)}</p>`).join('');}
 
 /* ---------- events ---------- */
 function toast(m){const el=$('#toast');el.textContent=m;el.hidden=false;clearTimeout(el._t);el._t=setTimeout(()=>el.hidden=true,2600);}
 function touch(){doc().updated=Date.now();save();renderNav();renderPreview();refreshDocSel();}
+function copyText(txt,sel){const fb=()=>{if(sel){sel.focus();sel.select();}toast('自動でコピーできませんでした。選択済みの文字を Ctrl+C（⌘C）でコピーしてください。');};
+ try{navigator.clipboard.writeText(txt).then(()=>toast('コピーしました')).catch(fb);}catch(err){fb();}}
 
-$('#form').addEventListener('input',e=>{const el=e.target;const k=el.dataset.k;if(!k)return;const s=S();
+$('#form').addEventListener('input',e=>{const el=e.target;const s=S();
+ if(el.dataset.gq){s.gq[el.dataset.gq]=el.value;touch();return;}
+ const k=el.dataset.k;if(!k)return;
  if(el.dataset.sub!==undefined)s[k][+el.dataset.i][el.dataset.sub]=el.value;
  else if(el.dataset.i!==undefined)s[k][+el.dataset.i]=el.value;
  else s[k]=el.value;
  if(k==='loop')renderLoopViz();
- if(k==='title')refreshDocSel();
+ if(k==='genre')updateGenreSug();
  touch();});
+$('#form').addEventListener('keydown',e=>{if(e.target.id==='moodUrl'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();$('[data-act="moodurl"]').click();}});
+$('#form').addEventListener('change',async e=>{const el=e.target;
+ if(el.classList.contains('exopt'))return;
+ if(el.id!=='moodFile')return;const fs=[...el.files].filter(f=>/^image\//.test(f.type));el.value='';if(!fs.length)return;let n=0;
+ for(const f of fs){try{const src=await shrinkImage(f);S().mood.push({kind:'local',url:'',src,title:f.name.replace(/\.[^.]+$/,''),note:''});n++;}catch(err){}}
+ if(n){renderForm();touch();toast(`${n}枚の画像を取り込みました`);}else toast('画像を読み込めませんでした');});
 
-const blankItem=k=>{const s=S();const f=SECTIONS.flatMap(x=>x.fields||[]).find(x=>x.k===k);if(f.type==='cards'){const o={};f.sub.forEach(sf=>o[sf.k]='');return o;}return '';};
+const blankItem=k=>{const f=SECTIONS.flatMap(x=>x.fields||[]).find(x=>x.k===k);if(f.type==='cards'){const o={};f.sub.forEach(sf=>o[sf.k]='');return o;}return '';};
 $('#form').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.step!==undefined){go(+b.dataset.step);return;}
  const a=b.dataset.act;if(!a)return;const s=S(),k=b.dataset.k,i=+b.dataset.i;
  if(a==='next'){go(step+1);return;} if(a==='prev'){go(step-1);return;}
  if(a==='mode'){outMode=b.dataset.v;document.querySelectorAll('[data-act="mode"]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===outMode));updateOut();return;}
- if(a==='copy'){const txt=outText();const o=$('#out');
-  const fb=()=>{o.focus();o.select();toast('自動でコピーできませんでした。選択済みの文字を Ctrl+C（⌘C）でコピーしてください。');};
-  try{navigator.clipboard.writeText(txt).then(()=>toast('コピーしました')).catch(fb);}catch(err){fb();}return;}
+ if(a==='copy'){copyText(outText(),$('#out'));return;}
  if(a==='import'){const raw=$('#impText').value;try{const d=JSON.parse(raw);if(!d||typeof d!=='object'||Array.isArray(d))throw 0;
-   const base=blank();Object.keys(base).forEach(key=>{if(d[key]!==undefined&&typeof d[key]===typeof base[key]&&Array.isArray(d[key])===Array.isArray(base[key]))base[key]=d[key];});
-   const id=newId();store.docs[id]={data:base,updated:Date.now()};store.current=id;save();refreshDocSel();go(0);toast('読み込みました');}
+   const id=newId();store.docs[id]=mkDoc(normalize(d));store.current=id;save();refreshDocSel();go(0);renderPreview();toast('読み込みました');}
   catch(err){toast('読み込めませんでした。「バックアップ（JSON）」でコピーした内容をそのまま貼り付けてください。');}return;}
  if(a==='chip'){const f=SECTIONS[step].fields.find(x=>x.k===k);const v=b.dataset.v;
   if(f.single){s[k]=s[k]===v?'':v;}else{s[k]=s[k].includes(v)?s[k].filter(x=>x!==v):[...s[k],v];}
   if(f.single)b.parentElement.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===s[k]));
   else b.setAttribute('aria-pressed',s[k].includes(v));
+  if(k==='genreTpl')updateGenreSug();
   touch();return;}
+ if(a==='usegenre'){s.genreTpl=b.dataset.v;renderForm();touch();toast(`「${genreL(s.genreTpl)}」の問いを各ステップに追加しました`);return;}
  if(a==='add'){s[k].push(blankItem(k));renderForm();touch();const n=s[k].length-1;const f=$(`[data-k="${k}"][data-i="${n}"]`);if(f)f.focus();return;}
  if(a==='del'){s[k].splice(i,1);renderForm();touch();return;}
  if(a==='up'&&i>0){[s[k][i-1],s[k][i]]=[s[k][i],s[k][i-1]];renderForm();touch();$(`[data-act="up"][data-k="${k}"][data-i="${i-1}"]`)?.focus();return;}
  if(a==='down'&&i<s[k].length-1){[s[k][i+1],s[k][i]]=[s[k][i],s[k][i+1]];renderForm();touch();$(`[data-act="down"][data-k="${k}"][data-i="${i+1}"]`)?.focus();return;}
+ if(a==='moodurl'){const inp=$('#moodUrl');const u=safeUrl(inp.value);if(!u){toast('https:// から始まるURLを入れてください');inp.focus();return;}
+  s.mood.push({kind:moodKind(u),url:u,src:'',title:'',note:''});renderForm();touch();$(`[data-k="mood"][data-i="${s.mood.length-1}"][data-sub="note"]`)?.focus();return;}
+ if(a==='moodfile'){$('#moodFile').click();return;}
+ if(a==='addtest'){s.playtests.unshift({date:today(),build:'',question:t(s.question),status:'',result:'',reaction:'',change:''});renderForm();touch();$('#pt-0-build')?.focus();return;}
+ if(a==='ptst'){const p=s.playtests[i];p.status=p.status===b.dataset.v?'':b.dataset.v;b.parentElement.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===p.status));touch();return;}
+ if(a==='send'){const lines=String(s.playtests[i].change||'').split('\n').map(t).filter(Boolean);if(!lines.length){toast('「次に変えること」が空です');return;}
+  const to=b.dataset.to,arr=s[to];while(arr.length&&!t(arr[arr.length-1]))arr.pop();let n=0;lines.forEach(l=>{if(!arr.map(t).includes(l)){arr.push(l);n++;}});if(!arr.length)arr.push('');
+  touch();toast(n?`${n}件を「${to==='next'?'次に作るもの':'未決定事項'}」に追加しました`:'すでに追加済みです');return;}
+ if(a==='dismiss'){if(!s.dismissed.includes(b.dataset.v))s.dismissed.push(b.dataset.v);renderForm();touch();return;}
+ if(a==='undismiss'){s.dismissed=[];renderForm();touch();return;}
+ if(a==='copyshare'){copyText($('#shUrl').value,$('#shUrl'));return;}
+ if(a==='mkshare'){const pw=$('#shPass').value;if(pw&&!(window.crypto&&crypto.subtle)){toast('この環境ではパスワードを付けられません（https で開いてください）');return;}
+  b.disabled=true;makeShare({scope:$('#shScope').checked,mood:$('#shMood').checked,tests:$('#shTests').checked,pw})
+   .then(r=>{$('#shOut').hidden=false;$('#shUrl').value=r.url;$('#shLen').textContent=`${r.url.length.toLocaleString()}文字`;$('#shWarn').innerHTML=shareWarn(r.url.length,r.zipped,!!pw);$('#shUrl').select();})
+   .catch(()=>toast('リンクを作れませんでした')).finally(()=>{b.disabled=false;});return;}
 });
+document.addEventListener('change',e=>{const el=e.target;if(!el.classList||!el.classList.contains('exopt'))return;store.exp[el.dataset.ex]=el.checked;syncExopt();save();renderPreview();updateOut();});
+document.addEventListener('click',e=>{if(e.target.closest('[data-print]'))doPrint();});
+document.addEventListener('error',e=>{const im=e.target;if(im&&im.tagName==='IMG'&&im.hasAttribute('data-fallback')){const sp=document.createElement('span');sp.textContent='画像を読み込めませんでした';im.replaceWith(sp);}},true);
 $('#stepList').addEventListener('click',e=>{const b=e.target.closest('button[data-step]');if(b)go(+b.dataset.step);});
-function go(n){step=Math.max(0,Math.min(SECTIONS.length-1,n));renderNav();renderForm();setView('form');
+function go(n){closeCompare();step=Math.max(0,Math.min(SECTIONS.length-1,n));renderNav();renderForm();setView('form');
  const f=$('#form');const r=f.getBoundingClientRect();if(r.top<0)f.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
  const cur=$('#stepList [aria-current="step"]');if(cur&&cur.scrollIntoView)cur.scrollIntoView({block:'nearest',inline:'nearest'});}
 
@@ -528,22 +939,91 @@ function setView(v){$('#app').classList.toggle('show-preview',v==='prev');$('#vF
 $('#vForm').onclick=()=>setView('form');$('#vPrev').onclick=()=>setView('prev');
 
 /* docs */
-function refreshDocSel(){const sel=$('#docSel');const ids=Object.keys(store.docs).sort((a,b)=>store.docs[b].updated-store.docs[a].updated);
- sel.innerHTML=ids.map(id=>`<option value="${id}"${id===store.current?' selected':''}>${esc(t(store.docs[id].data.title)||'無題の企画')}</option>`).join('');
+function refreshDocSel(){const sel=$('#docSel');
+ sel.innerHTML=sortedIds().map(id=>`<option value="${id}"${id===store.current?' selected':''}>${esc(docLabel(id))}</option>`).join('');
  $('#banner').hidden=!doc().sample;}
-$('#docSel').onchange=e=>{store.current=e.target.value;save();disarm();refreshDocSel();go(0);renderPreview();};
-function newBlank(){const id=newId();store.docs[id]={data:blank(),updated:Date.now()};store.current=id;save();refreshDocSel();go(0);renderPreview();toast('新しい企画を作りました');}
+function openDoc(id){store.current=id;save();disarm();refreshDocSel();go(0);renderPreviewNow();}
+$('#docSel').onchange=e=>openDoc(e.target.value);
+function newBlank(){const id=newId();store.docs[id]=mkDoc(blank());openDoc(id);toast('新しい企画を作りました');}
 $('#newDoc').onclick=newBlank;
 $('#startBlank').onclick=()=>{const old=store.current;delete store.docs[old];newBlank();};
 let armed=false;function disarm(){armed=false;const b=$('#delDoc');b.textContent='この企画を削除';b.classList.remove('danger-armed');}
 $('#delDoc').onclick=()=>{const b=$('#delDoc');
  if(!armed){armed=true;b.textContent='もう一度押すと削除';b.classList.add('danger-armed');setTimeout(()=>{if(armed)disarm();},4000);return;}
- disarm();delete store.docs[store.current];const ids=Object.keys(store.docs);
- if(ids.length){store.current=ids.sort((a,b)=>store.docs[b].updated-store.docs[a].updated)[0];}else{const id=newId();store.docs[id]={data:blank(),updated:Date.now()};store.current=id;}
- save();refreshDocSel();go(0);renderPreview();toast('削除しました');};
+ disarm();delete store.docs[store.current];const ids=sortedIds();
+ if(ids.length)store.current=ids[0];else{const id=newId();store.docs[id]=mkDoc(blank());store.current=id;}
+ save();refreshDocSel();go(0);renderPreviewNow();toast('削除しました');};
+
+/* 別案（複製） */
+$('#dupDoc').onclick=()=>{const dl=$('#dupDlg');dl.returnValue='';$('#dupName').value='';$('#dupOrig').value=doc().variant||'';dl.showModal();$('#dupName').focus();};
+$('#dupCancel').onclick=()=>$('#dupDlg').close('cancel');
+$('#dupDlg').addEventListener('close',()=>{if($('#dupDlg').returnValue!=='ok')return;const cur=doc();cur.variant=t($('#dupOrig').value);
+ const id=newId();store.docs[id]=mkDoc(normalize(JSON.parse(JSON.stringify(cur.data))),{parent:store.current,variant:t($('#dupName').value)||'別案'});
+ openDoc(id);toast('別案を作りました。違いは「比較」で確かめられます');});
+
+/* ---------- compare ---------- */
+const CMP_ROWS=[
+ {l:'一言コンセプト',v:s=>t(s.concept)},
+ {l:'フック',v:s=>(t(s.hookType)?`【${t(s.hookType)}】`:'')+t(s.hook)},
+ {l:'プレイヤーは何者か',v:s=>t(s.fantasy)},
+ {l:'中心になる楽しさ',set:s=>s.funs.map(k=>(FUNS.find(f=>f.k===k)||{}).l).filter(Boolean)},
+ {l:'デザインピラー',set:s=>s.pillars.filter(p=>t(p.name)).map(p=>t(p.name))},
+ {l:'コアループ',seq:s=>s.loop.filter(x=>t(x)).map(t)},
+ {l:'1回のプレイの流れ',v:s=>t(s.loopSession)},
+ {l:'プレイ時間',v:s=>t(s.playtime)},
+ {l:'プレイヤーができること',set:s=>s.verbs.filter(x=>t(x)).map(t)},
+ {l:'主要システム',set:s=>s.systems.filter(x=>t(x.content)).map(x=>t(x.name)||t(x.content).slice(0,16))},
+ {l:'今回は入れないもの',set:s=>s.notNow.filter(x=>t(x)).map(t)},
+ {l:'確かめたい問い',v:s=>t(s.question)}];
+let cmp={a:null,b:null};
+function relatedOf(a){const d=store.docs[a];const ids=sortedIds().filter(x=>x!==a);
+ return ids.find(x=>x===d.parent)||ids.find(x=>store.docs[x].parent===a)||ids.find(x=>d.parent&&store.docs[x].parent===d.parent)||ids[0]||null;}
+function cmpCell(r,s,o){if(r.v){const x=r.v(s);return x?esc(x).replace(/\n/g,'<br>'):'<span class="none">（未記入）</span>';}
+ const a=(r.set||r.seq)(s),b=(r.set||r.seq)(o);if(!a.length)return '<span class="none">（未記入）</span>';
+ return `<div class="chipset">${a.map(x=>`<span class="ci${b.includes(x)?'':' only'}">${esc(x)}</span>`).join(r.seq?'<span class="ar">→</span>':'')}</div>`;}
+function cmpDiff(r,a,b){if(r.v)return t(r.v(a))!==t(r.v(b));const f=r.set||r.seq;const x=f(a),y=f(b);return r.set?JSON.stringify([...x].sort())!==JSON.stringify([...y].sort()):JSON.stringify(x)!==JSON.stringify(y);}
+function renderCompare(){if(!store.docs[cmp.a])cmp.a=store.current;if(!store.docs[cmp.b])cmp.b=relatedOf(cmp.a);
+ const A=store.docs[cmp.a],B=store.docs[cmp.b],ids=sortedIds();
+ const sel=sd=>`<select data-pick="${sd}" aria-label="比較する企画 ${sd.toUpperCase()}">${ids.map(id=>`<option value="${id}"${id===cmp[sd]?' selected':''}>${esc(docLabel(id))}</option>`).join('')}</select>`;
+ let h=`<header class="sec-head"><p class="eyebrow">COMPARE</p><h2>案の比較</h2><p class="lead">2つの案のコンセプト・ピラー・コアループなどを並べます。違う行に印が付きます。どちらを採用するかと、その理由も残せます。</p></header>
+ <p class="cmp-legend"><span class="dmark">違い</span>内容が異なる行　<span class="ci only">黄色</span>片方の案にだけある項目</p>
+ <div class="cg"><div class="cg-row cg-top"><div class="cg-l"></div><div class="cg-c" data-side="A">${sel('a')}</div><div class="cg-c" data-side="B">${sel('b')}</div></div>`;
+ if(cmp.a===cmp.b)h+=`<p class="notice">同じ企画が選ばれています。片方を別の案に変えてください。</p>`;
+ for(const r of CMP_ROWS){const d=cmpDiff(r,A.data,B.data);
+  h+=`<div class="cg-row${d?' diff':''}"><div class="cg-l">${esc(r.l)}${d?'<span class="dmark">違い</span>':''}</div><div class="cg-c" data-side="A">${cmpCell(r,A.data,B.data)}</div><div class="cg-c" data-side="B">${cmpCell(r,B.data,A.data)}</div></div>`;}
+ h+=`<div class="cg-row cg-judge"><div class="cg-l">判定と理由</div>${['a','b'].map(sd=>{const id=cmp[sd],d=store.docs[id];
+  return `<div class="cg-c" data-side="${sd.toUpperCase()}"><div class="seg" role="group" aria-label="判定">${VERDICTS.map(v=>`<button type="button" data-act="verdict" data-doc="${id}" data-v="${v.k}" aria-pressed="${d.verdict===v.k}">${v.l}</button>`).join('')}</div><textarea rows="3" data-reason="${id}" placeholder="この案を選んだ／選ばなかった理由" aria-label="理由">${esc(d.reason)}</textarea><button type="button" class="btn sm" data-act="editdoc" data-doc="${id}">この案を編集する</button></div>`;}).join('')}</div></div>`;
+ $('#cmpIn').innerHTML=h;}
+function openCompare(){if(Object.keys(store.docs).length<2){toast('比較するには企画が2つ以上必要です。「別案を作る」で複製しましょう。');return;}
+ cmp.a=store.current;cmp.b=relatedOf(cmp.a);document.body.classList.add('comparing');$('#cmp').hidden=false;$('#cmpBtn').textContent='← 入力に戻る';renderCompare();window.scrollTo(0,0);}
+function closeCompare(){if(!document.body.classList.contains('comparing'))return;document.body.classList.remove('comparing');$('#cmp').hidden=true;$('#cmpBtn').textContent='比較';}
+$('#cmpBtn').onclick=()=>{if(document.body.classList.contains('comparing'))closeCompare();else openCompare();};
+$('#cmp').addEventListener('change',e=>{const sd=e.target.dataset.pick;if(sd){cmp[sd]=e.target.value;renderCompare();}});
+$('#cmp').addEventListener('input',e=>{const id=e.target.dataset.reason;if(id&&store.docs[id]){store.docs[id].reason=e.target.value;save();if(id===store.current)renderPreview();}});
+$('#cmp').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.doc;if(!store.docs[id])return;
+ if(b.dataset.act==='verdict'){const d=store.docs[id];d.verdict=d.verdict===b.dataset.v?'':b.dataset.v;save();renderCompare();refreshDocSel();renderPreview();}
+ if(b.dataset.act==='editdoc')openDoc(id);});
+
+/* ---------- viewer (共有リンクを開いたとき) ---------- */
+let viewing=null;
+function startViewer(){document.body.classList.add('viewing');$('#viewer').hidden=false;const hash=location.hash;const enc=/^#v1\.[a-z]*e\./.test(hash);
+ const show=async pw=>{try{const p=await readShare(hash,pw);const data=normalize(p.d);const pm=p.m&&typeof p.m==='object'?p.m:{};
+   const meta={variant:String(pm.variant||''),verdict:String(pm.verdict||''),reason:String(pm.reason||'')};
+   viewing={data,meta};$('#vSheet').innerHTML=sheetHTML(data,meta,{mood:!!(p.x&&p.x.mood),tests:!!(p.x&&p.x.tests)});
+   $('#vPw').hidden=true;$('#vSheet').hidden=false;$('#vImport').hidden=false;document.title=`${t(data.title)||'無題の企画'} — ゲーム企画ノート`;}
+  catch(e){if(enc){$('#vPwErr').hidden=false;$('#vPwIn').select();}
+   else $('#vSheet').innerHTML=`<p class="empty-doc">${e&&e.message==='nozip'?'このブラウザーでは、圧縮されたリンクを開けません。新しいブラウザーで開いてください。':'このリンクは読み込めませんでした。リンクが途中で切れていないか確かめてください。'}</p>`;}};
+ if(enc){$('#vPw').hidden=false;$('#vSheet').hidden=true;$('#vPwIn').focus();}else show();
+ $('#vPw').onsubmit=e=>{e.preventDefault();$('#vPwErr').hidden=true;show($('#vPwIn').value);};
+ $('#vImport').onclick=()=>{if(!viewing)return;const id=newId();store.docs[id]=mkDoc(viewing.data,{variant:viewing.meta.variant});store.current=id;
+  if(saveNow())location.replace(location.href.split('#')[0]);};
+ $('#vClose').onclick=()=>location.replace(location.href.split('#')[0]);}
+window.addEventListener('hashchange',()=>location.reload());
 
 /* init */
-load();refreshDocSel();renderNav();renderForm();renderPreview();
+load();
+if(/^#v1\./.test(location.hash))startViewer();
+else{refreshDocSel();renderNav();renderForm();renderPreviewNow();syncExopt();}
 </script>
 </body>
 </html>
