@@ -204,6 +204,10 @@ input[type=checkbox]{accent-color:var(--cobalt);width:16px;height:16px;margin:0}
 .chipset{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .ci{border:1px solid var(--rule);border-radius:999px;padding:2px 10px;font-size:13px}
 .ci.only{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.recs{display:flex;flex-direction:column;gap:6px}
+.rec{border:1px solid var(--rule);border-radius:6px;padding:6px 10px;font-size:13px;display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.rec.only{background:var(--marker);color:var(--marker-ink);border-color:var(--marker)}
+.rec.chg{border-left:3px solid var(--marker)}
 .chipset .ar{color:var(--ink-2)}
 .cg-judge .btn{align-self:flex-start}
 body.comparing .app,body.comparing .viewtoggle,body.comparing .banner{display:none!important}
@@ -803,7 +807,10 @@ ${fullMD(S(),doc(),store.exp)}${rv.length?`
 ツールが出した見直したい点：
 ${rv.map(x=>'- '+x.tx).join('\n')}
 `:''}`;}
-function outText(){if(outMode==='md')return fullMD(S(),doc(),store.exp);if(outMode==='ask')return consultText();return JSON.stringify(S(),null,2);}
+function outText(){if(outMode==='md')return fullMD(S(),doc(),store.exp);if(outMode==='ask')return consultText();return JSON.stringify(backupObj(),null,2);}
+/* バックアップ形式：{format, version, data, meta}。旧形式（企画データそのもの）も読み込める */
+const metaOf=d=>({variant:String(d&&d.variant||''),verdict:VERDICTS.some(v=>v.k===(d&&d.verdict))?d.verdict:'',reason:String(d&&d.reason||'')});
+function backupObj(){return {format:'game-concept-note',version:2,data:S(),meta:metaOf(doc())};}
 function finishH(){const s=S(),c=checks(s),rv=review(s),nd=s.dismissed.length;
  const items=c.length?c.map(x=>`<li><span class="tag ${x.lv}">${x.lv==='warn'?'要記入':'ヒント'}</span><span>${esc(x.tx)}</span><button type="button" class="jump" data-step="${x.st}">${SECTIONS[x.st].title}へ</button></li>`).join(''):`<li><span class="tag ok">OK</span><span>大きな抜けはありません。プレビューを読み通して、ピラーとコアループが同じ体験を向いているか確かめましょう。</span></li>`;
  const rvItems=rv.length?rv.map(x=>`<li><span class="tag q">見直し</span><span>${esc(x.tx)}</span><span class="ops"><button type="button" class="jump" data-step="${x.st}">${SECTIONS[x.st].title}へ</button><button type="button" class="jump mute" data-act="dismiss" data-v="${x.id}">非表示</button></span></li>`).join(''):`<li><span class="tag ok">OK</span><span>いまのルールで見つかる食い違いはありません。</span></li>`;
@@ -885,9 +892,16 @@ $('#form').addEventListener('input',e=>{const el=e.target;const s=S();
 $('#form').addEventListener('keydown',e=>{if(e.target.id==='moodUrl'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();$('[data-act="moodurl"]').click();}});
 $('#form').addEventListener('change',async e=>{const el=e.target;
  if(el.classList.contains('exopt'))return;
- if(el.id!=='moodFile')return;const fs=[...el.files].filter(f=>/^image\//.test(f.type));el.value='';if(!fs.length)return;let n=0;
- for(const f of fs){try{const src=await shrinkImage(f);S().mood.push({kind:'local',url:'',src,title:f.name.replace(/\.[^.]+$/,''),note:''});n++;}catch(err){}}
- if(n){renderForm();touch();toast(`${n}枚の画像を取り込みました`);}else toast('画像を読み込めませんでした');});
+ if(el.id!=='moodFile')return;const fs=[...el.files].filter(f=>/^image\//.test(f.type));el.value='';if(!fs.length)return;
+ const id=store.current;let n=0;
+ for(const f of fs){try{const src=await shrinkImage(f);const d=store.docs[id];if(!d)break;
+  d.data.mood.push({kind:'local',url:'',src,title:f.name.replace(/\.[^.]+$/,''),note:''});n++;}catch(err){}}
+ const d=store.docs[id];
+ if(!d){toast('取り込み中に企画が削除されたため、画像は追加されませんでした');return;}
+ if(!n){toast('画像を読み込めませんでした');return;}
+ d.updated=Date.now();save();refreshDocSel();
+ if(id===store.current){if(SECTIONS[step].id==='world')renderForm();renderNav();renderPreview();toast(`${n}枚の画像を取り込みました`);}
+ else toast(`${n}枚の画像を、取り込みを始めた企画「${docLabel(id)}」に追加しました`);});
 
 const blankItem=k=>{const f=SECTIONS.flatMap(x=>x.fields||[]).find(x=>x.k===k);if(f.type==='cards'){const o={};f.sub.forEach(sf=>o[sf.k]='');return o;}return '';};
 $('#form').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
@@ -897,7 +911,8 @@ $('#form').addEventListener('click',e=>{const b=e.target.closest('button');if(!b
  if(a==='mode'){outMode=b.dataset.v;document.querySelectorAll('[data-act="mode"]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===outMode));updateOut();return;}
  if(a==='copy'){copyText(outText(),$('#out'));return;}
  if(a==='import'){const raw=$('#impText').value;try{const d=JSON.parse(raw);if(!d||typeof d!=='object'||Array.isArray(d))throw 0;
-   const id=newId();store.docs[id]=mkDoc(normalize(d));store.current=id;save();refreshDocSel();go(0);renderPreview();toast('読み込みました');}
+   const wrapped=d.format==='game-concept-note'&&d.data&&typeof d.data==='object';
+   const id=newId();store.docs[id]=mkDoc(normalize(wrapped?d.data:d),wrapped?metaOf(d.meta):{});store.current=id;save();refreshDocSel();go(0);renderPreview();toast('読み込みました');}
   catch(err){toast('読み込めませんでした。「バックアップ（JSON）」でコピーした内容をそのまま貼り付けてください。');}return;}
  if(a==='chip'){const f=SECTIONS[step].fields.find(x=>x.k===k);const v=b.dataset.v;
   if(f.single){s[k]=s[k]===v?'':v;}else{s[k]=s[k].includes(v)?s[k].filter(x=>x!==v):[...s[k],v];}
@@ -967,26 +982,28 @@ const CMP_ROWS=[
  {l:'フック',v:s=>(t(s.hookType)?`【${t(s.hookType)}】`:'')+t(s.hook)},
  {l:'プレイヤーは何者か',v:s=>t(s.fantasy)},
  {l:'中心になる楽しさ',set:s=>s.funs.map(k=>(FUNS.find(f=>f.k===k)||{}).l).filter(Boolean)},
- {l:'デザインピラー',set:s=>s.pillars.filter(p=>t(p.name)).map(p=>t(p.name))},
+ {l:'デザインピラー',rec:s=>s.pillars.filter(p=>t(p.name)).map(p=>({k:t(p.name),b:[t(p.desc),t(p.yes)&&'○ '+t(p.yes),t(p.no)&&'× '+t(p.no)].filter(Boolean).join('\n')}))},
  {l:'コアループ',seq:s=>s.loop.filter(x=>t(x)).map(t)},
  {l:'1回のプレイの流れ',v:s=>t(s.loopSession)},
  {l:'プレイ時間',v:s=>t(s.playtime)},
  {l:'プレイヤーができること',set:s=>s.verbs.filter(x=>t(x)).map(t)},
- {l:'主要システム',set:s=>s.systems.filter(x=>t(x.content)).map(x=>t(x.name)||t(x.content).slice(0,16))},
+ {l:'主要システム',rec:s=>s.systems.filter(x=>t(x.content)).map((x,i)=>({k:t(x.name)||`（名前なし ${i+1}）`,b:t(x.content)}))},
  {l:'今回は入れないもの',set:s=>s.notNow.filter(x=>t(x)).map(t)},
  {l:'確かめたい問い',v:s=>t(s.question)}];
 let cmp={a:null,b:null};
 function relatedOf(a){const d=store.docs[a];const ids=sortedIds().filter(x=>x!==a);
  return ids.find(x=>x===d.parent)||ids.find(x=>store.docs[x].parent===a)||ids.find(x=>d.parent&&store.docs[x].parent===d.parent)||ids[0]||null;}
-function cmpCell(r,s,o){if(r.v){const x=r.v(s);return x?esc(x).replace(/\n/g,'<br>'):'<span class="none">（未記入）</span>';}
+function cmpCell(r,s,o){if(r.rec){const a=r.rec(s),b=r.rec(o);if(!a.length)return '<span class="none">（未記入）</span>';
+  return `<div class="recs">${a.map(x=>{const y=b.find(z=>z.k===x.k);const st=!y?' only':y.b!==x.b?' chg':'';return `<div class="rec${st}"><strong>${esc(x.k)}</strong>${st===' chg'?'<span class="dmark">変更</span>':''}${x.b?`<span>${esc(x.b).replace(/\n/g,'<br>')}</span>`:''}</div>`;}).join('')}</div>`;}
+ if(r.v){const x=r.v(s);return x?esc(x).replace(/\n/g,'<br>'):'<span class="none">（未記入）</span>';}
  const a=(r.set||r.seq)(s),b=(r.set||r.seq)(o);if(!a.length)return '<span class="none">（未記入）</span>';
  return `<div class="chipset">${a.map(x=>`<span class="ci${b.includes(x)?'':' only'}">${esc(x)}</span>`).join(r.seq?'<span class="ar">→</span>':'')}</div>`;}
-function cmpDiff(r,a,b){if(r.v)return t(r.v(a))!==t(r.v(b));const f=r.set||r.seq;const x=f(a),y=f(b);return r.set?JSON.stringify([...x].sort())!==JSON.stringify([...y].sort()):JSON.stringify(x)!==JSON.stringify(y);}
+function cmpDiff(r,a,b){if(r.rec){const k=s=>JSON.stringify(r.rec(s).map(x=>[x.k,x.b]).sort());return k(a)!==k(b);}if(r.v)return t(r.v(a))!==t(r.v(b));const f=r.set||r.seq;const x=f(a),y=f(b);return r.set?JSON.stringify([...x].sort())!==JSON.stringify([...y].sort()):JSON.stringify(x)!==JSON.stringify(y);}
 function renderCompare(){if(!store.docs[cmp.a])cmp.a=store.current;if(!store.docs[cmp.b])cmp.b=relatedOf(cmp.a);
  const A=store.docs[cmp.a],B=store.docs[cmp.b],ids=sortedIds();
  const sel=sd=>`<select data-pick="${sd}" aria-label="比較する企画 ${sd.toUpperCase()}">${ids.map(id=>`<option value="${id}"${id===cmp[sd]?' selected':''}>${esc(docLabel(id))}</option>`).join('')}</select>`;
  let h=`<header class="sec-head"><p class="eyebrow">COMPARE</p><h2>案の比較</h2><p class="lead">2つの案のコンセプト・ピラー・コアループなどを並べます。違う行に印が付きます。どちらを採用するかと、その理由も残せます。</p></header>
- <p class="cmp-legend"><span class="dmark">違い</span>内容が異なる行　<span class="ci only">黄色</span>片方の案にだけある項目</p>
+ <p class="cmp-legend"><span class="dmark">違い</span>内容が異なる行　<span class="ci only">黄色</span>片方の案にだけある項目　<span class="dmark">変更</span>同じ名前で中身が違う項目</p>
  <div class="cg"><div class="cg-row cg-top"><div class="cg-l"></div><div class="cg-c" data-side="A">${sel('a')}</div><div class="cg-c" data-side="B">${sel('b')}</div></div>`;
  if(cmp.a===cmp.b)h+=`<p class="notice">同じ企画が選ばれています。片方を別の案に変えてください。</p>`;
  for(const r of CMP_ROWS){const d=cmpDiff(r,A.data,B.data);
@@ -1015,7 +1032,7 @@ function startViewer(){document.body.classList.add('viewing');$('#viewer').hidde
    else $('#vSheet').innerHTML=`<p class="empty-doc">${e&&e.message==='nozip'?'このブラウザーでは、圧縮されたリンクを開けません。新しいブラウザーで開いてください。':'このリンクは読み込めませんでした。リンクが途中で切れていないか確かめてください。'}</p>`;}};
  if(enc){$('#vPw').hidden=false;$('#vSheet').hidden=true;$('#vPwIn').focus();}else show();
  $('#vPw').onsubmit=e=>{e.preventDefault();$('#vPwErr').hidden=true;show($('#vPwIn').value);};
- $('#vImport').onclick=()=>{if(!viewing)return;const id=newId();store.docs[id]=mkDoc(viewing.data,{variant:viewing.meta.variant});store.current=id;
+ $('#vImport').onclick=()=>{if(!viewing)return;const id=newId();store.docs[id]=mkDoc(viewing.data,metaOf(viewing.meta));store.current=id;
   if(saveNow())location.replace(location.href.split('#')[0]);};
  $('#vClose').onclick=()=>location.replace(location.href.split('#')[0]);}
 window.addEventListener('hashchange',()=>location.reload());
